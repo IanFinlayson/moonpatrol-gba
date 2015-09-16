@@ -12,7 +12,11 @@ TARGET=moonbase.gba
 SRCS := $(wildcard source/*.c)
 HDRS := $(wildcard source/*.h)
 OBJS := $(patsubst source/%.c,bin/%.o,$(SRCS))
- 
+
+# do everything
+all: $(TARGET) tags
+	@echo "All done!"
+
 # link it all together
 $(TARGET): $(OBJS) $(HDRS) Makefile
 	@mkdir -p bin
@@ -26,5 +30,9 @@ bin/%.o: source/%.c $(HDRS) Makefile
  
 # tidy up
 clean:
-	rm -f $(TARGET) $(OBJS) bin/moonbase.elf
+	rm -f $(TARGET) $(OBJS) bin/moonbase.elf tags
+
+# create ctags index
+tags:
+	ctags $(SRCS) $(HDRS)
 
