@@ -1,18 +1,17 @@
 /*
- * hello.c
- * this program is a simple GBA example
- * it simply creates an image and waits
+ * interrupts.c
+ * this file contains the intterupt functions for the game, alond with the
+ * intterupt table needed to link GBA executables
  */
 
-/* the game boy advance uses "interrupts" to handle certain situations
- * for now we will ignore these */
+/* the interrupt functions are this type */
+typedef void (*intrp)( );
+
+/* this function is used for interrupts which we ignore */
 void interrupt_ignore( ) {
-    /* do nothing */
 }
 
-/* this table specifies which interrupts we handle which way
- * for now, we ignore all of them */
-typedef void (*intrp)( );
+/* this table specifies which interrupts we handle which way */
 const intrp IntrTable[13] = {
     interrupt_ignore,   /* V Blank interrupt */
     interrupt_ignore,   /* H Blank interrupt */
