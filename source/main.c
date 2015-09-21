@@ -8,8 +8,8 @@
 
 /* the main function */
 int main( ) { 
-    /* we set the mode to mode 3 */
-    *REG_DISPCNT = MODE_3 | BACKGROUND2;
+    /* we set the mode to mode 0 */
+    *REG_DISPCNT = MODE_0;
 
     /* declare loop variables (declarations inside for statement are
      * NOT allowed in ANSI C) */

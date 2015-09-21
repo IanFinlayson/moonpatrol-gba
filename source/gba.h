@@ -7,7 +7,7 @@
 #define GBA_H
 
 /* graphics mode stuff */
-#define MODE_3 0x03
+#define MODE_0 0x0
 #define BACKGROUND2 0x400
 #define REG_DISPCNT ((volatile unsigned long*) 0x4000000)
 
