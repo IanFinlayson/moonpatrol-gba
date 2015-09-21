@@ -6,7 +6,7 @@ KITHOME="/home/finlayson/gba/devkitadv/"
 CC=$(KITHOME)/bin/arm-agb-elf-gcc
 CFLAGS=-O3
 LFLAGS=-O3 -nostartfiles $(KITHOME)/arm-agb-elf/lib/crt0.o -lm
-TARGET=moonbase.gba
+TARGET=moonpatrol.gba
  
 # globs
 SRCS := $(wildcard source/*.c)
@@ -20,8 +20,8 @@ all: tags $(TARGET)
 # link it all together
 $(TARGET): $(OBJS) $(HDRS) Makefile
 	@mkdir -p bin
-	$(CC) $(LFLAGS) $(OBJS) -o bin/moonbase.elf
-	$(KITHOME)/bin/arm-agb-elf-objcopy -O binary bin/moonbase.elf $(TARGET)
+	$(CC) $(LFLAGS) $(OBJS) -o bin/moonpatrol.elf
+	$(KITHOME)/bin/arm-agb-elf-objcopy -O binary bin/moonpatrol.elf $(TARGET)
  
 # compile an object based on source and headers
 bin/%.o: source/%.c $(HDRS) Makefile
@@ -30,7 +30,7 @@ bin/%.o: source/%.c $(HDRS) Makefile
  
 # tidy up
 clean:
-	rm -f $(TARGET) $(OBJS) bin/moonbase.elf tags
+	rm -f $(TARGET) $(OBJS) bin/moonpatrol.elf tags
 
 # create ctags index
 tags:
