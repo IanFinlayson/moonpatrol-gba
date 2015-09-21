@@ -14,7 +14,7 @@ HDRS := $(wildcard source/*.h)
 OBJS := $(patsubst source/%.c,bin/%.o,$(SRCS))
 
 # do everything
-all: $(TARGET) tags
+all: tags $(TARGET)
 	@echo "All done!"
 
 # link it all together

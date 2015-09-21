@@ -9,7 +9,7 @@
 /* the main function */
 int main( ) { 
     /* we set the mode to mode 3 */
-    *REG_DISPLAY_CONTROL = MODE_3 | BACKGROUND2;
+    *REG_DISPCNT = MODE_3 | BACKGROUND2;
 
     /* declare loop variables (declarations inside for statement are
      * NOT allowed in ANSI C) */
