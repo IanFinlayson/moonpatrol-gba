@@ -4,3 +4,5 @@
 *.gba
 tags
 
+# ignore the generated images
+images/*.h
