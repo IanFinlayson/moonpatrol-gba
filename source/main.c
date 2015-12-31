@@ -8,6 +8,30 @@
 #include "../images/layer0.h"
 #include "../maps/layer0_map.h"
 
+
+//button identifiers
+#define BUTTON_RIGHT 16
+#define BUTTON_LEFT  32
+#define BUTTON_UP    64
+#define BUTTON_DOWN  128
+#define BUTTONS (*(volatile unsigned int*)0x04000130)
+
+//scrolling registers for background 0
+#define REG_BG0HOFS *(volatile unsigned short*)0x4000010
+#define REG_BG0VOFS *(volatile unsigned short*)0x4000012
+
+//vertical refresh register
+#define REG_DISPSTAT   *(volatile unsigned short*)0x4000004
+
+
+//wait for vertical refresh
+void WaitVBlank(void)
+{
+    while((REG_DISPSTAT & 1));
+}
+
+
+
 /* the main function */
 int main( ) {
     /* we set the mode to mode 0 with background 0 turned on*/
@@ -30,10 +54,27 @@ int main( ) {
     dma_memcpy((void*)layer0_map, (void*)bg0map, 1024, DMA_32_NOW);
 
 
-
+    int x = 0, y = 0;
     /* we now loop forever displaying the image */
     while (1) {
-        /* do nothing */
+        //wait for vertical refresh
+		WaitVBlank();
+
+		//D-pad moves background
+		if(!(BUTTONS & BUTTON_LEFT)) x--;
+		if(!(BUTTONS & BUTTON_RIGHT)) x++;
+		if(!(BUTTONS & BUTTON_UP)) y--;
+		if(!(BUTTONS & BUTTON_DOWN)) y++;
+
+		//use hardware background scrolling
+		REG_BG0VOFS = y ;
+		REG_BG0HOFS = x ;
+
+        //wait for vertical refresh
+		WaitVBlank();
+		
+        int n;
+		for(n = 0; n < 4000; n++);
     }
 }
 
