@@ -31,8 +31,8 @@
 /* TODO what's this about */
 #define SCREEN_SHIFT 8
 #define WRAPAROUND 0x1
-#define CharBaseBlock(n) (((n)*0x4000)+0x6000000)                                  
-#define ScreenBaseBlock(n) (((n)*0x800)+0x6000000)                                 
+#define CharBaseBlock(n) (((n)*0x4000)+0x6000000)
+#define ScreenBaseBlock(n) (((n)*0x800)+0x6000000)
 
 
 /* sets up 256 color mode for tile maps */
