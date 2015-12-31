@@ -6,10 +6,6 @@
 #ifndef GBA_H
 #define GBA_H
 
-/*
- * graphics modes and basic registers and things
- */
-
 /* the mode 0 flag */
 #define MODE_0 0x0
 
@@ -26,14 +22,13 @@
 #define SCREEN ((volatile unsigned short*) 0x6000000)
 
 /* the location of background 0 */
-#define REG_BG0_PTR *(volatile unsigned short*)0x4000008
+#define REG_BG0_PTR (*(volatile unsigned short*)0x4000008)
 
-/* TODO what's this about */
+/* defines for laying out tile memory */
 #define SCREEN_SHIFT 8
 #define WRAPAROUND 0x1
-#define CharBaseBlock(n) (((n)*0x4000)+0x6000000)
-#define ScreenBaseBlock(n) (((n)*0x800)+0x6000000)
-
+#define CharBaseBlock(n) (((n) * 0x4000) + 0x6000000)
+#define ScreenBaseBlock(n) (((n) * 0x800) + 0x6000000)
 
 /* sets up 256 color mode for tile maps */
 #define BG_COLOR256 0x80
@@ -47,16 +42,9 @@
 #define TEXTBG_SIZE_512x256 0x4000
 #define TEXTBG_SIZE_512x512 0xC000
 
-
 /* scrolling registers for background 0 */
 #define REG_BG0_XSCROLL *(volatile unsigned short*)0x4000010
 #define REG_BG0_YSCROLL *(volatile unsigned short*)0x4000012
-
-
-
-/*
- * DMA copy stuff
- */
 
 /* function to perform fast DMA memory copies */
 void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
@@ -79,6 +67,20 @@ void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
 /* combined flags which turn on DMA right away for 16 or 32 bits */
 #define DMA_32_NOW (DMA_ENABLE | DMA_TIMING_IMMEDIATE | DMA_32)
 #define DMA_16_NOW (DMA_ENABLE | DMA_TIMING_IMMEDIATE | DMA_16)
+
+/* button identifiers */
+#define BUTTON_RIGHT 16
+#define BUTTON_LEFT  32
+#define BUTTON_UP    64
+#define BUTTON_DOWN  128
+#define BUTTONS (*(volatile unsigned int*)0x04000130)
+
+/* scrolling registers for background 0 */
+#define REG_BG0HOFS *(volatile unsigned short*)0x4000010
+#define REG_BG0VOFS *(volatile unsigned short*)0x4000012
+
+/* the vertical refresh register */
+#define REG_DISPSTAT *(volatile unsigned short*)0x4000004
 
 #endif
 

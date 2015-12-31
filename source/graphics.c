@@ -5,17 +5,6 @@
 
 #include "gba.h"
 
-/* function to compute a 16-bit integer color based on the three components
- * the first bit is ignored, then there are five bits for blue, 5 bits for
- * green and five bits for red, valid parameters are in the range of 0-31
- */
-unsigned short make_color(unsigned char r, unsigned char g, unsigned char b) {
-    unsigned short color = b << 10;
-    color += g << 5;
-    color += r;
-    return color;
-}
-
 /* function to use the GBA's hardware memory copy */
 void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode) {
     /* ensure that one of the valid modes are passed */
@@ -30,5 +19,19 @@ void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode) {
     REG_DMA_COUNT = count | mode;
 }
 
+/* wait for a vertical refresh */
+void wait_vblank(void) {
+    while ((REG_DISPSTAT & 1)) {
+        /* do nothing */
+    }
+}
+
+/* delay for an amount of time */
+void delay(int amount) {
+    int i;
+    for (i = 0; i < amount * 10; i++) {
+
+    }
+}
 
 

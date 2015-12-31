@@ -10,8 +10,14 @@
 #define WIDTH 240
 #define HEIGHT 160
 
-/* create a 16-bit color value from components */
-unsigned short make_color(unsigned char r, unsigned char g, unsigned char b);
+/* wait for a vertical refresh */
+void wait_vblank();
+
+/* delay for an amount of time */
+void delay(int amount);
+
+/* check if a button is down */
+int button_down(int button);
 
 #endif
 
