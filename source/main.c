@@ -25,19 +25,20 @@ void setup_backgrounds() {
 
     /* copy tile map 0 into memory */
     unsigned short* bg0map = (unsigned short*)ScreenBaseBlock(31);
-    dma_memcpy((void*)layer1, (void*)bg0map, 1024, DMA_32_NOW);
+    dma_memcpy((void*)layer0, (void*)bg0map, 1024, DMA_32_NOW);
 
 
 
 
-
+#if 0
     /* set bg 1 flags */
-    //REG_BG1_CONTROL = BG_COLOR256 | TEXTBG_SIZE_256x256 |
-        //(31 << SCREEN_SHIFT) | WRAPAROUND;
+    REG_BG1_CONTROL = BG_COLOR256 | TEXTBG_SIZE_256x256 |
+        (31 << SCREEN_SHIFT) | WRAPAROUND;
 
     /* copy tile map 1 into memory */
-    //unsigned short* bg1map = (unsigned short*)ScreenBaseBlock(31) + (1024 * 32);
-    //dma_memcpy((void*)layer1, (void*)bg1map, 1024, DMA_32_NOW);
+    unsigned short* bg1map = (unsigned short*)ScreenBaseBlock(31) + (1024 * 32);
+    dma_memcpy((void*)layer1, (void*)bg1map, 1024, DMA_32_NOW);
+#endif
 
 
 
