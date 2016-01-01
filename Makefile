@@ -1,7 +1,7 @@
 
 # this program relies on the devkitadv (ttp://devkitadv.sourceforge.net/)
 # which must be unpacked, the KITHOME variable must point to its location
-KITHOME=/home/finlayson/gba/devkitadv/
+KITHOME=/home/finlayson/gba/devkitadv
 
 CC=$(KITHOME)/bin/arm-agb-elf-gcc
 CFLAGS=-O3

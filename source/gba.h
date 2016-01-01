@@ -21,8 +21,9 @@
 /* the screen memory pointer */
 #define SCREEN ((volatile unsigned short*) 0x6000000)
 
-/* the location of background 0 */
-#define REG_BG0_PTR (*(volatile unsigned short*)0x4000008)
+/* control register for BG0 */
+#define REG_BG0_CONTROL (*(volatile unsigned short*)0x4000008)
+#define REG_BG1_CONTROL (*(volatile unsigned short*)0x400000a)
 
 /* defines for laying out tile memory */
 #define SCREEN_SHIFT 8
@@ -42,9 +43,27 @@
 #define TEXTBG_SIZE_512x256 0x4000
 #define TEXTBG_SIZE_512x512 0xC000
 
+
+/* took these from the flappy bird game... */
+#define BG_CHAR_BLOCK 0
+#define BG_SCREEN_BLOCK0 16
+#define BG_SCREEN_BLOCK1 18
+#define BG_SCREEN_BLOCK2 20
+#define BG_COLOR_PALETTE 0
+#define BG_COLOR_256 1
+#define BG_COLOR_16 0
+#define COLOR_SHIFT 7
+#define CHAR_SHIFT 2
+#define PAL_SHIFT 7
+#define SCREEN_SHIFT 8
+
+
+
 /* scrolling registers for background 0 */
 #define REG_BG0_XSCROLL *(volatile unsigned short*)0x4000010
 #define REG_BG0_YSCROLL *(volatile unsigned short*)0x4000012
+#define REG_BG1_XSCROLL *(volatile unsigned short*)0x4000014
+#define REG_BG1_YSCROLL *(volatile unsigned short*)0x4000016
 
 /* function to perform fast DMA memory copies */
 void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
@@ -74,10 +93,6 @@ void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
 #define BUTTON_UP    64
 #define BUTTON_DOWN  128
 #define BUTTONS (*(volatile unsigned int*)0x04000130)
-
-/* scrolling registers for background 0 */
-#define REG_BG0HOFS *(volatile unsigned short*)0x4000010
-#define REG_BG0VOFS *(volatile unsigned short*)0x4000012
 
 /* the vertical refresh register */
 #define REG_DISPSTAT *(volatile unsigned short*)0x4000004
