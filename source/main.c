@@ -73,8 +73,8 @@ int main( ) {
         /* assign the variables into the background scroll registers */
 		REG_BG0_XSCROLL = x;
 		REG_BG0_YSCROLL = y;
-		REG_BG1_XSCROLL = x;
-		REG_BG1_YSCROLL = y;
+		REG_BG1_XSCROLL = x*2;
+		REG_BG1_YSCROLL = y*2;
 
         /* wait for vertical refresh again */
 		wait_vblank();
