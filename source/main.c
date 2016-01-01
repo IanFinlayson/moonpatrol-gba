@@ -80,7 +80,7 @@ int main( ) {
 		wait_vblank();
 
         /* delay for a little bit */
-        delay(400);
+        delay(1200);
     }
 }
 
