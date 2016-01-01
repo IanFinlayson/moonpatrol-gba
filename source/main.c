@@ -19,26 +19,32 @@ void setup_backgrounds() {
     dma_memcpy((void*) background_data, (void*) CharBaseBlock(0),
             (background_width * background_height), DMA_16_NOW);
 
-    /* set bg 0 flags */
-    REG_BG0_CONTROL = BG_COLOR256 | TEXTBG_SIZE_256x256 |
-        (31 << SCREEN_SHIFT) | WRAPAROUND;
+    /* set the control register for bg 0 */
+    REG_BG0_CONTROL = 2 |                   // priority [0-3] 0 is highest
+                      (0 << 2) |            // charblock [0-3]
+                      (0 << 6) |            // mosaic flag [0-1]
+                      (1 << 7) |            // color mode [0-1] 0 is 16 colors, 1 is 256
+                      (20 << 8) |            // screenblock [0-31]
+                      (1 << 13) |           // wrapping flag [0-1]
+                      (0 << 14);            // bg size [0-3] (see docs)
 
     /* copy tile map 0 into memory */
-    unsigned short* bg0map = (unsigned short*)ScreenBaseBlock(31);
+    unsigned short* bg0map = (unsigned short*)ScreenBaseBlock(20);
     dma_memcpy((void*)layer0, (void*)bg0map, 1024, DMA_32_NOW);
 
 
-
-
-#if 0
     /* set bg 1 flags */
-    REG_BG1_CONTROL = BG_COLOR256 | TEXTBG_SIZE_256x256 |
-        (31 << SCREEN_SHIFT) | WRAPAROUND;
+    REG_BG1_CONTROL = 0 |                   // priority [0-3] 0 is highest
+                      (0 << 2) |            // charblock [0-3]
+                      (0 << 6) |            // mosaic flag [0-1]
+                      (1 << 7) |            // color mode [0-1] 0 is 16 colors, 1 is 256
+                      (21 << 8) |            // screenblock [0-31]
+                      (1 << 13) |           // wrapping flag [0-1]
+                      (0 << 14);            // bg size [0-3] (see docs)
 
     /* copy tile map 1 into memory */
-    unsigned short* bg1map = (unsigned short*)ScreenBaseBlock(31) + (1024 * 32);
+    unsigned short* bg1map = (unsigned short*)ScreenBaseBlock(21);
     dma_memcpy((void*)layer1, (void*)bg1map, 1024, DMA_32_NOW);
-#endif
 
 
 
@@ -47,7 +53,7 @@ void setup_backgrounds() {
 /* the main function */
 int main( ) {
     /* we set the mode to mode 0 with backgrounds 0 and 1 turned on*/
-    *REG_DISPCNT = MODE_0 | BG0_ENABLE                  ;//| BG1_ENABLE;
+    *REG_DISPCNT = MODE_0 | BG0_ENABLE | BG1_ENABLE;
 
     /* set up the backgrounds */
     setup_backgrounds();
@@ -72,7 +78,7 @@ int main( ) {
 
         /* wait for vertical refresh again */
 		wait_vblank();
-		
+
         /* delay for a little bit */
         delay(400);
     }
