@@ -11,7 +11,7 @@
 #define HEIGHT 160
 
 /* wait for a vertical refresh */
-void wait_vblank();
+void wait_vblank(void);
 
 /* delay for an amount of time */
 void delay(int amount);
