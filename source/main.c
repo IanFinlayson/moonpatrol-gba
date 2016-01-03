@@ -62,12 +62,34 @@ void setup_backgrounds() {
     unsigned short* bg2map = (unsigned short*)ScreenBaseBlock(22);
     dma_memcpy((void*)layer2, (void*)bg2map, 1024, DMA_32_NOW);
 
+
+    /* set bg 3 flags */
+    REG_BG3_CONTROL = 0 |                   // priority [0-3] 0 is highest
+                      (0 << 2) |            // charblock [0-3]
+                      (0 << 6) |            // mosaic flag [0-1]
+                      (1 << 7) |            // color mode [0-1] 0 is 16 colors, 1 is 256
+                      (23 << 8) |            // screenblock [0-31]
+                      (1 << 13) |           // wrapping flag [0-1]
+                      (0 << 14);            // bg size [0-3] (see docs)
+
+
+    /* FIXME - for now just write some text */
+    unsigned short* bg3map = (unsigned short*)ScreenBaseBlock(23);
+
+    int i;
+
+    /* zero out the text layer */
+    for (i = 0; i < 1024*2; i++) {
+        bg3map[i] = 0;
+    }
+
+    bg3map[0] = 32 * 11 + 1;
 }
 
 /* the main function */
 int main( ) {
-    /* we set the mode to mode 0 with backgrounds 0 and 1 turned on*/
-    *REG_DISPCNT = MODE_0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE;
+    /* we set the mode to mode 0 with all backgrounds turned on*/
+    *REG_DISPCNT = MODE_0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE | BG3_ENABLE;
 
     /* set up the backgrounds */
     setup_backgrounds();
