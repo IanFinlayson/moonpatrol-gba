@@ -24,6 +24,8 @@
 /* control register for BG0 */
 #define REG_BG0_CONTROL (*(volatile unsigned short*)0x4000008)
 #define REG_BG1_CONTROL (*(volatile unsigned short*)0x400000a)
+#define REG_BG2_CONTROL (*(volatile unsigned short*)0x400000c)
+#define REG_BG3_CONTROL (*(volatile unsigned short*)0x400000e)
 
 /* defines for laying out tile memory */
 #define SCREEN_SHIFT 8
@@ -59,11 +61,15 @@
 
 
 
-/* scrolling registers for background 0 */
+/* scrolling registers for backgrounds */
 #define REG_BG0_XSCROLL *(volatile unsigned short*)0x4000010
 #define REG_BG0_YSCROLL *(volatile unsigned short*)0x4000012
 #define REG_BG1_XSCROLL *(volatile unsigned short*)0x4000014
 #define REG_BG1_YSCROLL *(volatile unsigned short*)0x4000016
+#define REG_BG2_XSCROLL *(volatile unsigned short*)0x4000018
+#define REG_BG2_YSCROLL *(volatile unsigned short*)0x400001a
+#define REG_BG3_XSCROLL *(volatile unsigned short*)0x400001c
+#define REG_BG3_YSCROLL *(volatile unsigned short*)0x400001e
 
 /* function to perform fast DMA memory copies */
 void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
