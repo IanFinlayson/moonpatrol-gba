@@ -21,23 +21,23 @@ void setup_backgrounds() {
             (background_width * background_height), DMA_16_NOW);
 
     /* set up layer 0 (mountains) */
-    init_background(0, 3, 20);
-    unsigned short* bg0map = (unsigned short*)ScreenBaseBlock(20);
+    init_background(0, 3, 16);
+    unsigned short* bg0map = (unsigned short*)ScreenBaseBlock(16);
     dma_memcpy((void*)layer0, (void*)bg0map, 1024, DMA_32_NOW);
 
     /* set up layer 1 (hills) */
-    init_background(1, 2, 21);
-    unsigned short* bg1map = (unsigned short*)ScreenBaseBlock(21);
+    init_background(1, 2, 17);
+    unsigned short* bg1map = (unsigned short*)ScreenBaseBlock(17);
     dma_memcpy((void*)layer1, (void*)bg1map, 1024, DMA_32_NOW);
 
     /* set up layer 2 (ground) */
-    init_background(2, 1, 22);
-    unsigned short* bg2map = (unsigned short*)ScreenBaseBlock(22);
+    init_background(2, 1, 18);
+    unsigned short* bg2map = (unsigned short*)ScreenBaseBlock(18);
     dma_memcpy((void*)layer2, (void*)bg2map, 1024, DMA_32_NOW);
 
     /* set up layer 3 (ui) */
-    init_background(3, 0, 23);
-    unsigned short* bg3map = (unsigned short*)ScreenBaseBlock(23);
+    init_background(3, 0, 19);
+    unsigned short* bg3map = (unsigned short*)ScreenBaseBlock(19);
     int i;
     /* zero out the text layer */
     for (i = 0; i < 1024*2; i++) {
