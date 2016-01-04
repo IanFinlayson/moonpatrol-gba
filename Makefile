@@ -1,4 +1,4 @@
-
+# Makefile
 # this program relies on the devkitadv (ttp://devkitadv.sourceforge.net/)
 # which must be unpacked, the KITHOME variable must point to its location
 KITHOME=/home/finlayson/gba/devkitadv

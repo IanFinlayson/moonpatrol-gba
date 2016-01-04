@@ -18,6 +18,12 @@ int button_down(int button);
 /* initialize a background */
 void init_background(int bg, int priority, int screenblock);
 
+/* perform fast DMA memory copies */
+void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
+
+/* write text to a specific tile on the screen */
+void set_text(char* str, int row, int col, unsigned short* textmap);
+
 
 #endif
 

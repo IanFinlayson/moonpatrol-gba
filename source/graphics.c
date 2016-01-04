@@ -31,6 +31,7 @@ void init_background(int bg, int priority, int screenblock) {
         case 3: control = (volatile unsigned short*) 0x400000e; break;
     }
 
+    /* set the appropriate bits in the control register */
     *control = priority |
                (0 << 2) |            // charblock [0-3]
                (0 << 6) |            // mosaic flag [0-1]
@@ -39,5 +40,29 @@ void init_background(int bg, int priority, int screenblock) {
                (1 << 13) |           // wrapping flag [0-1]
                (0 << 14);            // bg size [0-3] 0 is 256x256
 }
+
+/* write text to a specific tile on the screen */
+void set_text(char* str, int row, int col, unsigned short* textmap) {
+    /* find the index in the texmap to draw to */
+    int index = row * 32 + col;
+
+    /* the text characters start down in the image */
+    int base = 32 * 11;
+
+    /* the first 32 characters are missing from the map (controls etc.) */
+    int missing = 32;
+
+    /* for each character */
+    while (*str) {
+
+        /* place this character in the map */
+        textmap[index] = base + (*str - missing);
+
+        /* move onto the next character */
+        index++;
+        str++;
+    }
+}
+
 
 

@@ -45,10 +45,8 @@ void setup_backgrounds() {
     }
 
 
-
-
-
-    bg3map[0] = 32 * 11 + 1;
+    /* FIXME temporary text */
+    set_text("Hello!", 0, 0, bg3map);
 }
 
 /* the main function */

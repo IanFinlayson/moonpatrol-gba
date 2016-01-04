@@ -39,12 +39,6 @@
 #define BG_PALETTE_MEMORY ((unsigned short*)0x5000000)
 #define OBJ_PALETTE_MEMORY ((unsigned short*) 0x5000200)
 
-/* different sizes for the tile maps */
-#define TEXTBG_SIZE_256x256 0x0
-#define TEXTBG_SIZE_256x512 0x8000
-#define TEXTBG_SIZE_512x256 0x4000
-#define TEXTBG_SIZE_512x512 0xC000
-
 /* scrolling registers for backgrounds */
 #define REG_BG0HOFS *(volatile unsigned short*)0x4000010
 #define REG_BG0VOFS *(volatile unsigned short*)0x4000012
@@ -54,9 +48,6 @@
 #define REG_BG2VOFS *(volatile unsigned short*)0x400001a
 #define REG_BG3HOFS *(volatile unsigned short*)0x400001c
 #define REG_BG3VOFS *(volatile unsigned short*)0x400001e
-
-/* function to perform fast DMA memory copies */
-void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
 
 /* the registers which trigeer a DMA operation to start */
 #define REG_DMA_SOURCE *(volatile unsigned int*)0x40000D4
