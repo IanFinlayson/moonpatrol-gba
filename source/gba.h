@@ -22,14 +22,13 @@
 #define SCREEN ((volatile unsigned short*) 0x6000000)
 
 /* control register for BG0 */
-#define REG_BG0_CONTROL (*(volatile unsigned short*)0x4000008)
-#define REG_BG1_CONTROL (*(volatile unsigned short*)0x400000a)
-#define REG_BG2_CONTROL (*(volatile unsigned short*)0x400000c)
-#define REG_BG3_CONTROL (*(volatile unsigned short*)0x400000e)
+#define REG_BG0CNT (*(volatile unsigned short*)0x4000008)
+#define REG_BG1CNT (*(volatile unsigned short*)0x400000a)
+#define REG_BG2CNT (*(volatile unsigned short*)0x400000c)
+#define REG_BG3CNT (*(volatile unsigned short*)0x400000e)
 
 /* defines for laying out tile memory */
 #define SCREEN_SHIFT 8
-#define WRAPAROUND 0x1
 #define CharBaseBlock(n) (((n) * 0x4000) + 0x6000000)
 #define ScreenBaseBlock(n) (((n) * 0x800) + 0x6000000)
 
@@ -38,6 +37,7 @@
 
 /* identify palette memory */
 #define BG_PALETTE_MEMORY ((unsigned short*)0x5000000)
+#define OBJ_PALETTE_MEMORY ((unsigned short*) 0x5000200)
 
 /* different sizes for the tile maps */
 #define TEXTBG_SIZE_256x256 0x0
@@ -45,31 +45,15 @@
 #define TEXTBG_SIZE_512x256 0x4000
 #define TEXTBG_SIZE_512x512 0xC000
 
-
-/* took these from the flappy bird game... */
-#define BG_CHAR_BLOCK 0
-#define BG_SCREEN_BLOCK0 16
-#define BG_SCREEN_BLOCK1 18
-#define BG_SCREEN_BLOCK2 20
-#define BG_COLOR_PALETTE 0
-#define BG_COLOR_256 1
-#define BG_COLOR_16 0
-#define COLOR_SHIFT 7
-#define CHAR_SHIFT 2
-#define PAL_SHIFT 7
-#define SCREEN_SHIFT 8
-
-
-
 /* scrolling registers for backgrounds */
-#define REG_BG0_XSCROLL *(volatile unsigned short*)0x4000010
-#define REG_BG0_YSCROLL *(volatile unsigned short*)0x4000012
-#define REG_BG1_XSCROLL *(volatile unsigned short*)0x4000014
-#define REG_BG1_YSCROLL *(volatile unsigned short*)0x4000016
-#define REG_BG2_XSCROLL *(volatile unsigned short*)0x4000018
-#define REG_BG2_YSCROLL *(volatile unsigned short*)0x400001a
-#define REG_BG3_XSCROLL *(volatile unsigned short*)0x400001c
-#define REG_BG3_YSCROLL *(volatile unsigned short*)0x400001e
+#define REG_BG0HOFS *(volatile unsigned short*)0x4000010
+#define REG_BG0VOFS *(volatile unsigned short*)0x4000012
+#define REG_BG1HOFS *(volatile unsigned short*)0x4000014
+#define REG_BG1VOFS *(volatile unsigned short*)0x4000016
+#define REG_BG2HOFS *(volatile unsigned short*)0x4000018
+#define REG_BG2VOFS *(volatile unsigned short*)0x400001a
+#define REG_BG3HOFS *(volatile unsigned short*)0x400001c
+#define REG_BG3VOFS *(volatile unsigned short*)0x400001e
 
 /* function to perform fast DMA memory copies */
 void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);

@@ -6,10 +6,6 @@
 #ifndef MOONPATROL_H
 #define MOONPATROL_H
 
-/* the width and height of the screen */
-#define WIDTH 240
-#define HEIGHT 160
-
 /* wait for a vertical refresh */
 void wait_vblank(void);
 
@@ -18,6 +14,10 @@ void delay(int amount);
 
 /* check if a button is down */
 int button_down(int button);
+
+/* initialize a background */
+void init_background(int bg, int priority, int screenblock);
+
 
 #endif
 
