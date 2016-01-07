@@ -39,6 +39,9 @@
 #define BG_PALETTE_MEMORY ((unsigned short*)0x5000000)
 #define OBJ_PALETTE_MEMORY ((unsigned short*) 0x5000200)
 
+/* memory address for sprite image data */
+#define SPRITE_DATA ((volatile unsigned short*)0x6010000)
+
 /* scrolling registers for backgrounds */
 #define REG_BG0HOFS *(volatile unsigned short*)0x4000010
 #define REG_BG0VOFS *(volatile unsigned short*)0x4000012

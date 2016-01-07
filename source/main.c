@@ -6,6 +6,7 @@
 #include "gba.h"
 #include "moonpatrol.h"
 #include "../images/background.h"
+#include "../images/objects.h"
 #include "../maps/layer0.h"
 #include "../maps/layer1.h"
 #include "../maps/layer2.h"
@@ -16,9 +17,9 @@ void setup_backgrounds() {
     dma_memcpy((void*) background_palette, (void*) BG_PALETTE_MEMORY,
             256, DMA_16_NOW);
 
-    /* load the tile image into tile memory */
+    /* load the tile image into memory */
     dma_memcpy((void*) background_data, (void*) CharBaseBlock(0),
-            (background_width * background_height), DMA_16_NOW);
+            (background_width * background_height) / 2, DMA_16_NOW);
 
     /* set up layer 0 (mountains) */
     init_background(0, 3, 16);
@@ -49,6 +50,17 @@ void setup_backgrounds() {
     set_text("Hello!", 0, 0, bg3map);
 }
 
+/* setup the sprite objects in memory */
+void setup_sprites() {
+    /* load the palette into object palette memory */
+    dma_memcpy((void*) objects_palette, (void*) OBJ_PALETTE_MEMORY,
+            256, DMA_16_NOW);
+
+    /* load the object image into memory */
+    dma_memcpy((void*) objects_data, (void*) SPRITE_DATA,
+            (objects_width * objects_height) / 2, DMA_16_NOW);
+}
+
 /* the main function */
 int main( ) {
     /* we set the mode to mode 0 with all backgrounds turned on*/
@@ -56,6 +68,9 @@ int main( ) {
 
     /* set up the backgrounds */
     setup_backgrounds();
+
+    /* setup the sprites */
+    setup_sprites();
 
     /* scroll the bgs up a bit (rather than adjust the maps) */
     REG_BG0VOFS = 5;
