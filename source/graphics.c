@@ -23,7 +23,7 @@ void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode) {
 /* initialize a background */
 void init_background(int bg, int priority, int screenblock) {
     /* get the appropriate control register */
-    unsigned short* control;
+    volatile unsigned short* control;
     switch (bg) {
         case 0: control = (volatile unsigned short*) 0x4000008; break;
         case 1: control = (volatile unsigned short*) 0x400000a; break;
