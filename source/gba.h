@@ -22,10 +22,10 @@
 #define SCREEN ((volatile unsigned short*) 0x6000000)
 
 /* control register for BG0 */
-#define REG_BG0CNT (*(volatile unsigned short*)0x4000008)
-#define REG_BG1CNT (*(volatile unsigned short*)0x400000a)
-#define REG_BG2CNT (*(volatile unsigned short*)0x400000c)
-#define REG_BG3CNT (*(volatile unsigned short*)0x400000e)
+#define REG_BG0CNT (*(volatile unsigned short*) 0x4000008)
+#define REG_BG1CNT (*(volatile unsigned short*) 0x400000a)
+#define REG_BG2CNT (*(volatile unsigned short*) 0x400000c)
+#define REG_BG3CNT (*(volatile unsigned short*) 0x400000e)
 
 /* defines for laying out tile memory */
 #define SCREEN_SHIFT 8
@@ -36,26 +36,29 @@
 #define BG_COLOR256 0x80
 
 /* identify palette memory */
-#define BG_PALETTE_MEMORY ((unsigned short*)0x5000000)
-#define OBJ_PALETTE_MEMORY ((unsigned short*) 0x5000200)
+#define BG_PALETTE_MEMORY ((volatile unsigned short*) 0x5000000)
+#define OBJECT_PALETTE_MEMORY ((volatile unsigned short*) 0x5000200)
 
 /* memory address for sprite image data */
-#define SPRITE_DATA ((volatile unsigned short*)0x6010000)
+#define OBJECT_DATA_MEMORY ((volatile unsigned short*) 0x6010000)
+
+/* memory addess for object attributes OAM */
+#define OBJECT_ATTRIBUTE_MEMOORY ((volatile unsigned short*) 0x7000000)
 
 /* scrolling registers for backgrounds */
-#define REG_BG0HOFS *(volatile unsigned short*)0x4000010
-#define REG_BG0VOFS *(volatile unsigned short*)0x4000012
-#define REG_BG1HOFS *(volatile unsigned short*)0x4000014
-#define REG_BG1VOFS *(volatile unsigned short*)0x4000016
-#define REG_BG2HOFS *(volatile unsigned short*)0x4000018
-#define REG_BG2VOFS *(volatile unsigned short*)0x400001a
-#define REG_BG3HOFS *(volatile unsigned short*)0x400001c
-#define REG_BG3VOFS *(volatile unsigned short*)0x400001e
+#define REG_BG0HOFS *(volatile unsigned short*) 0x4000010
+#define REG_BG0VOFS *(volatile unsigned short*) 0x4000012
+#define REG_BG1HOFS *(volatile unsigned short*) 0x4000014
+#define REG_BG1VOFS *(volatile unsigned short*) 0x4000016
+#define REG_BG2HOFS *(volatile unsigned short*) 0x4000018
+#define REG_BG2VOFS *(volatile unsigned short*) 0x400001a
+#define REG_BG3HOFS *(volatile unsigned short*) 0x400001c
+#define REG_BG3VOFS *(volatile unsigned short*) 0x400001e
 
 /* the registers which trigeer a DMA operation to start */
-#define REG_DMA_SOURCE *(volatile unsigned int*)0x40000D4
-#define REG_DMA_DESTINATION *(volatile unsigned int*)0x40000D8
-#define REG_DMA_COUNT *(volatile unsigned int*)0x40000DC
+#define REG_DMA_SOURCE *(volatile unsigned int*) 0x40000D4
+#define REG_DMA_DESTINATION *(volatile unsigned int*) 0x40000D8
+#define REG_DMA_COUNT *(volatile unsigned int*) 0x40000DC
 
 /* flag to enable direct memory access */
 #define DMA_ENABLE 0x80000000
@@ -76,10 +79,10 @@
 #define BUTTON_LEFT  32
 #define BUTTON_UP    64
 #define BUTTON_DOWN  128
-#define BUTTONS (*(volatile unsigned int*)0x04000130)
+#define BUTTONS (*(volatile unsigned int*) 0x04000130)
 
 /* the vertical refresh register */
-#define REG_DISPSTAT *(volatile unsigned short*)0x4000004
+#define REG_DISPSTAT *(volatile unsigned short*) 0x4000004
 
 #endif
 
