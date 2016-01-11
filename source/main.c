@@ -52,70 +52,11 @@ void setup_backgrounds() {
 
 
 
-
-//misc sprite constants
-#define OBJ_MAP_2D 0x0
-#define OBJ_MAP_1D 0x40
-#define OBJ_ENABLE 0x1000
-
-//attribute0 stuff
-#define ROTATION_FLAG 0x100
-#define SIZE_DOUBLE 0x200
-#define MODE_NORMAL 0x0
-#define MODE_TRANSPERANT 0x400
-#define MODE_WINDOWED 0x800
-#define MOSAIC 0x1000
-#define COLOR_16 0x0000
-#define COLOR_256 0x2000
-#define SQUARE 0x0
-#define TALL 0x4000
-#define WIDE 0x8000
-
-//attribute1 stuff
-#define ROTDATA(n) ((n) << 9)
-#define HORIZONTAL_FLIP 0x1000
-#define VERTICAL_FLIP 0x2000
-#define SIZE_8 0x0
-#define SIZE_16 0x4000
-#define SIZE_32 0x8000
-#define SIZE_64 0xC000
-
-//attribute2 stuff
-#define PRIORITY(n) ((n) << 10)
-#define PALETTE(n) ((n) << 12)
-
-//sprite structs
-typedef struct tagSprite
-{
-    unsigned short attribute0;
-    unsigned short attribute1;
-    unsigned short attribute2;
-    unsigned short attribute3;
-}Sprite,*pSprite;
-
-typedef struct tagSpriteRotate
-{
-    unsigned short filler1[3];
-    unsigned short pa;
-    unsigned short filler2[3];
-    unsigned short pb;
-    unsigned short filler3[3];
-    unsigned short pc;
-    unsigned short filler4[3];
-    unsigned short pd;
-}SpriteRotate,*pSpriteRotate;
-
-//create an array of 128 sprites equal to OAM
-Sprite sprites[128];
-
-//create pointer to the same sprite array for rotations
-pSpriteRotate rotData = (pSpriteRotate)sprites;
-
-
-
-
 /* setup the sprite objects in memory */
 void setup_sprites() {
+    /* clear all sprites out */
+    init_sprites();
+
     /* load the palette into object palette memory */
     dma_memcpy((void*) objects_palette, (void*) OBJECT_PALETTE_MEMORY,
             256, DMA_16_NOW);
@@ -124,57 +65,12 @@ void setup_sprites() {
     dma_memcpy((void*) objects_data, (void*) OBJECT_DATA_MEMORY,
             (objects_width * objects_height) / 2, DMA_16_NOW);
 
-    /* move all sprites offscreen to hide them */
-    int n;
-    for(n = 0; n < 128; n++) {
-        sprites[n].attribute0 = 160;
-        sprites[n].attribute1 = 240;
-    }
 
-    /* set up the first attribute */
-    sprites[0].attribute0 = 125 |           // y coordinate
-                            (0 << 8) |    // rendering mode
-                            (0 << 10) |   // gfx mode
-                            (0 << 12) |   // mosaic
-                            (1 << 13) |   // color mode, 0 is 16 colors, 1 is 256
-                            (1 << 14);    // size
+    /* setup our moon rover */
+    struct Sprite* rover = setup_sprite(0, 104, 125, SIZE_32_16, 0, 0, 0, 0);
 
-    /* set up the second attribute */
-    sprites[0].attribute1 = 104 |           // x coordinate
-                            (0 << 9) |    // affine flag
-                            (0 << 12) |   // horizontal flip flag
-                            (0 << 13) |   // vertical flip flag
-                            (2 << 14);    // shape
-
-    /* setup the second attribute */
-    sprites[0].attribute2 = 0 |           // tile index?
-                            (0 << 10) |   // priority 0 is low!
-                            (0 << 12);    // palette bank (only in 16 color mode)
-
-
-// now the other one!!!!!!!!!!1
-
-
-
-    /* set up the first attribute */
-    sprites[1].attribute0 = 50 |         // y coordinate
-                            (0 << 8) |    // rendering mode
-                            (0 << 10) |   // gfx mode
-                            (0 << 12) |   // mosaic
-                            (1 << 13) |   // color mode, 0 is 16 colors, 1 is 256
-                            (1 << 14);    // size
-
-    /* set up the second attribute */
-    sprites[1].attribute1 = 50 |          // x coordinate
-                            (0 << 9) |    // affine flag
-                            (0 << 12) |   // horizontal flip flag
-                            (0 << 13) |   // vertical flip flag
-                            (2 << 14);    // shape
-
-    /* setup the second attribute */
-    sprites[1].attribute2 = 16 |           // tile index?
-                            (0 << 10) |   // priority 0 is low!
-                            (0 << 12);    // palette bank (only in 16 color mode)
+    /* setup our space ship */
+    struct Sprite* ship = setup_sprite(1, 50, 50, SIZE_32_16, 0, 0, 16, 0);
 }
 
 
@@ -191,14 +87,14 @@ int main( ) {
     /* setup the sprites */
     setup_sprites();
 
-
-
     /* scroll the bgs up a bit (rather than adjust the maps) */
     REG_BG0VOFS = 5;
     REG_BG1VOFS = 20;
     REG_BG2VOFS = 5;
 
+    /* the scroll for the game */
     int x = 0;
+
     /* we now loop forever displaying the image */
     while (1) {
         /* wait for vertical refresh */
@@ -215,19 +111,11 @@ int main( ) {
         /* wait for vertical refresh again */
         wait_vblank();
 
-
-        int n; 
-        unsigned short* temp; 
-        temp = (unsigned short*)sprites; 
-
-        for(n = 0; n < 128*4; n++) {
-            OBJECT_ATTRIBUTE_MEMOORY[n] = temp[n]; 
-
-        }
-
+        /* update all sprites on screen */
+        update_sprites(); 
 
         /* delay for a little bit */
-        delay(2000);
+        delay(1800);
     }
 }
 

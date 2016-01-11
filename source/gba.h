@@ -8,12 +8,22 @@
 
 /* the mode 0 flag */
 #define MODE_0 0x0
+#define MODE_1 0x1
+#define MODE_2 0x2
+#define MODE_3 0x3
+#define MODE_4 0x4
+#define MODE_5 0x5
 
 /* the flag to enable various background layers */
 #define BG0_ENABLE 0x100
 #define BG1_ENABLE 0x200
 #define BG2_ENABLE 0x400
 #define BG3_ENABLE 0x800
+
+/* flags to set object handling */
+#define OBJ_MAP_2D 0x0
+#define OBJ_MAP_1D 0x40
+#define OBJ_ENABLE 0x1000
 
 /* the graphics display control register */
 #define REG_DISPCNT ((volatile unsigned long*) 0x4000000)
