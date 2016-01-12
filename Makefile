@@ -10,7 +10,7 @@ TARGET=moonpatrol.gba
  
 # globs
 SRCS := $(wildcard source/*.c)
-HDRS := $(wildcard source/*.h)
+HDRS := $(wildcard source/*.h) images/background.h images/objects.h
 OBJS := $(patsubst source/%.c,bin/%.o,$(SRCS))
 
 # do everything
@@ -27,6 +27,13 @@ $(TARGET): $(OBJS) $(HDRS) Makefile
 bin/%.o: source/%.c $(HDRS) Makefile
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c $< -o $@
+
+# compile the images into header data
+images/background.h: images/background.png
+	cd images && png2gba -p -t background.png && cd ..
+
+images/objects.h: images/objects.png
+	cd images && png2gba -p -t objects.png && cd ..
  
 # tidy up
 clean:
