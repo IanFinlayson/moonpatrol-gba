@@ -6,6 +6,9 @@
 #ifndef MOONPATROL_H
 #define MOONPATROL_H
 
+/* the speed of the rover in pixels per frame */
+#define ROVER_SPEED 3
+
 /* wait for a vertical refresh */
 void wait_vblank(void);
 
@@ -57,6 +60,12 @@ void update_sprites();
 
 /* initialize all sprites */
 void init_sprites();
+
+/* move a sprite in a direction */
+void move_sprite(struct Sprite* sprite, int dx, int dy);
+
+/* set a sprite postion */
+void position_sprite(struct Sprite* sprite, int x, int y);
 
 #endif
 

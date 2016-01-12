@@ -138,3 +138,30 @@ void init_sprites() {
     }
 }
 
+/* move a sprite in a direction */
+void move_sprite(struct Sprite* sprite, int dx, int dy) {
+    /* get the current y coordinate */
+    int y = sprite->attribute0 & 0xff;
+
+    /* get the current x coordinate */
+    int x = sprite->attribute1 & 0x1ff;
+
+    /* move to the new location */
+    position_sprite(sprite, x + dx, y + dy);
+}
+
+/* set a sprite postion */
+void position_sprite(struct Sprite* sprite, int x, int y) {
+    /* clear out the y coordinate */
+    sprite->attribute0 &= 0xff00;
+
+    /* set the new y coordinate */
+    sprite->attribute0 |= (y & 0xff);
+
+    /* clear out the x coordinate */
+    sprite->attribute1 &= 0xfe00;
+
+    /* set the new x coordinate */
+    sprite->attribute1 |= (x & 0x1ff);
+}
+

@@ -11,6 +11,10 @@
 #include "../maps/layer1.h"
 #include "../maps/layer2.h"
 
+/* the sprite objects we have */
+struct Sprite* rover;
+struct Sprite* ship;
+
 /* setup the background images */
 void setup_backgrounds() {
     /* load the palette into background palette memory */
@@ -51,7 +55,6 @@ void setup_backgrounds() {
 }
 
 
-
 /* setup the sprite objects in memory */
 void setup_sprites() {
     /* clear all sprites out */
@@ -67,10 +70,10 @@ void setup_sprites() {
 
 
     /* setup our moon rover */
-    struct Sprite* rover = setup_sprite(0, 104, 125, SIZE_32_16, 0, 0, 0, 0);
+    rover = setup_sprite(0, 104, 125, SIZE_32_16, 0, 0, 0, 0);
 
     /* setup our space ship */
-    struct Sprite* ship = setup_sprite(1, 50, 50, SIZE_32_16, 0, 0, 16, 0);
+    ship = setup_sprite(1, 50, 50, SIZE_32_16, 0, 0, 16, 0);
 }
 
 
@@ -102,6 +105,14 @@ int main( ) {
 
         /* we scroll right continuously in this game */
         x++;
+
+        /* move the rover on user input */
+        if (button_down(BUTTON_LEFT)) {
+            move_sprite(rover, -ROVER_SPEED, 0);
+        }
+        if (button_down(BUTTON_RIGHT)) {
+            move_sprite(rover, ROVER_SPEED, 0);
+        }
 
         /* parallax it up */
         REG_BG0HOFS = x;
