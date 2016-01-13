@@ -165,3 +165,12 @@ void position_sprite(struct Sprite* sprite, int x, int y) {
     sprite->attribute1 |= (x & 0x1ff);
 }
 
+/* change the tile offset of a sprite */
+void sprite_set_offset(struct Sprite* sprite, int offset) {
+    /* clear the old offset */
+    sprite->attribute2 &= 0xfc00;
+
+    /* apply the new one */
+    sprite->attribute2 |= (offset & 0x03ff);
+}
+

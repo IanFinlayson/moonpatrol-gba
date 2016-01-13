@@ -11,8 +11,60 @@
 #include "../maps/layer1.h"
 #include "../maps/layer2.h"
 
+/* the moon rover */
+struct Rover {
+    int side;
+    struct Sprite* body;
+    struct Sprite* wheels[3];
+};
+
+/* setup the rover */
+void init_rover(struct Rover* rover) {
+    /* setup our sprites */
+    rover->body = setup_sprite(0, 104, 125, SIZE_32_16, 0, 0, 0, 1);
+    int i;
+    for (i = 0; i < 3; i++) {
+        rover->wheels[i] = setup_sprite(1 + i, 104 + 12*i, 135, SIZE_8_8, 0, 0, 32, 0);
+    }
+    rover->side = 0;
+}
+
+/* move the rover left or right */
+void rover_left(struct Rover* rover) {
+    move_sprite(rover->body, -ROVER_SPEED, 0);
+    int i;
+    for (i = 0; i < 3; i++) {
+        move_sprite(rover->wheels[i], -ROVER_SPEED, 0);
+    }
+}
+void rover_right(struct Rover* rover) {
+    move_sprite(rover->body, ROVER_SPEED, 0);
+    int i;
+    for (i = 0; i < 3; i++) {
+        move_sprite(rover->wheels[i], ROVER_SPEED, 0);
+    }
+}
+
+/* flip the wheel animation in the rover */
+void rover_flip(struct Rover* rover) {
+    int offset, i;
+
+    if (rover->side) {
+        offset = 34;
+        rover->side = 0;
+    } else {
+        offset = 32;
+        rover->side = 1;
+    }
+
+    for (i = 0; i < 3; i++) {
+        sprite_set_offset(rover->wheels[i], offset);
+    }
+
+}
+
+
 /* the sprite objects we have */
-struct Sprite* rover;
 struct Sprite* ship;
 
 /* setup the background images */
@@ -69,11 +121,8 @@ void setup_sprites() {
             (objects_width * objects_height) / 2, DMA_16_NOW);
 
 
-    /* setup our moon rover */
-    rover = setup_sprite(0, 104, 125, SIZE_32_16, 0, 0, 0, 0);
-
     /* setup our space ship */
-    ship = setup_sprite(1, 50, 50, SIZE_32_16, 0, 0, 16, 0);
+    ship = setup_sprite(4, 50, 50, SIZE_32_16, 0, 0, 16, 0);
 }
 
 
@@ -95,6 +144,10 @@ int main( ) {
     REG_BG1VOFS = 20;
     REG_BG2VOFS = 5;
 
+    /* the rover */
+    struct Rover rover;
+    init_rover(&rover);
+
     /* the scroll for the game */
     int x = 0;
 
@@ -106,12 +159,14 @@ int main( ) {
         /* we scroll right continuously in this game */
         x++;
 
+        rover_flip(&rover);
+
         /* move the rover on user input */
         if (button_down(BUTTON_LEFT)) {
-            move_sprite(rover, -ROVER_SPEED, 0);
+            rover_left(&rover);
         }
         if (button_down(BUTTON_RIGHT)) {
-            move_sprite(rover, ROVER_SPEED, 0);
+            rover_right(&rover);
         }
 
         /* parallax it up */

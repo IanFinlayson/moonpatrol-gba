@@ -67,5 +67,8 @@ void move_sprite(struct Sprite* sprite, int dx, int dy);
 /* set a sprite postion */
 void position_sprite(struct Sprite* sprite, int x, int y);
 
+/* set a sprite tile offset */
+void sprite_set_offset(struct Sprite* sprite, int offset);
+
 #endif
 
