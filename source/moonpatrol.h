@@ -1,6 +1,6 @@
 /*
  * moonpatrol.h
- * this file contains function and type declarations
+ * this file contains function and type declarations for the moon patrol game
  */
 
 #ifndef MOONPATROL_H
@@ -72,6 +72,24 @@ void position_sprite(struct Sprite* sprite, int x, int y);
 
 /* set a sprite tile offset */
 void sprite_set_offset(struct Sprite* sprite, int offset);
+
+/* the moon rover */
+struct Rover {
+    int side;
+    int counter;
+    struct Sprite* body;
+    struct Sprite* wheels[3];
+};
+
+/* initialize the rover */
+void rover_init(struct Rover* rover);
+
+/* move the rover left or right */
+void rover_left(struct Rover* rover);
+void rover_right(struct Rover* rover);
+
+/* flip the wheel animation in the rover */
+void rover_flip(struct Rover* rover);
 
 #endif
 

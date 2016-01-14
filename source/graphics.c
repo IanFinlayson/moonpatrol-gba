@@ -1,6 +1,6 @@
 /*
  * graphics.c
- * this file contains graphics routines
+ * this file contains graphics routines for the GBA in general
  */
 
 #include "gba.h"

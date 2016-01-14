@@ -56,14 +56,14 @@
 #define OBJECT_ATTRIBUTE_MEMOORY ((volatile unsigned short*) 0x7000000)
 
 /* scrolling registers for backgrounds */
-#define REG_BG0HOFS *(volatile unsigned short*) 0x4000010
-#define REG_BG0VOFS *(volatile unsigned short*) 0x4000012
-#define REG_BG1HOFS *(volatile unsigned short*) 0x4000014
-#define REG_BG1VOFS *(volatile unsigned short*) 0x4000016
-#define REG_BG2HOFS *(volatile unsigned short*) 0x4000018
-#define REG_BG2VOFS *(volatile unsigned short*) 0x400001a
-#define REG_BG3HOFS *(volatile unsigned short*) 0x400001c
-#define REG_BG3VOFS *(volatile unsigned short*) 0x400001e
+#define REG_BG0HOFS (*(volatile unsigned short*) 0x4000010)
+#define REG_BG0VOFS (*(volatile unsigned short*) 0x4000012)
+#define REG_BG1HOFS (*(volatile unsigned short*) 0x4000014)
+#define REG_BG1VOFS (*(volatile unsigned short*) 0x4000016)
+#define REG_BG2HOFS (*(volatile unsigned short*) 0x4000018)
+#define REG_BG2VOFS (*(volatile unsigned short*) 0x400001a)
+#define REG_BG3HOFS (*(volatile unsigned short*) 0x400001c)
+#define REG_BG3VOFS (*(volatile unsigned short*) 0x400001e)
 
 /* the registers which trigeer a DMA operation to start */
 #define REG_DMA_SOURCE *(volatile unsigned int*) 0x40000D4
@@ -85,14 +85,14 @@
 #define DMA_16_NOW (DMA_ENABLE | DMA_TIMING_IMMEDIATE | DMA_16)
 
 /* button identifiers */
-#define BUTTON_RIGHT 16
-#define BUTTON_LEFT  32
-#define BUTTON_UP    64
-#define BUTTON_DOWN  128
+#define BUTTON_RIGHT 0x10
+#define BUTTON_LEFT  0x20
+#define BUTTON_UP    0x40
+#define BUTTON_DOWN  0x80
 #define BUTTONS (*(volatile unsigned int*) 0x04000130)
 
 /* the vertical refresh register */
-#define REG_DISPSTAT *(volatile unsigned short*) 0x4000004
+#define REG_DISPSTAT (*(volatile unsigned short*) 0x4000004)
 
 #endif
 
