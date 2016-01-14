@@ -55,30 +55,35 @@ enum SpriteSize {
 };
 
 /* function to initialize a sprite with its properties, and return a pointer */
-struct Sprite* setup_sprite(int index, int x, int y, enum SpriteSize size,
+struct Sprite* sprite_init(int index, int x, int y, enum SpriteSize size,
         int horizontal_flip, int vertical_flip, int tile_index, int priority);
 
 /* update all sprite positions on screen - should be drawn after refresh */
-void update_sprites();
+void sprite_update_all();
 
-/* initialize all sprites */
-void init_sprites();
+/* clear all sprites off the screen */
+void sprite_clear();
 
 /* move a sprite in a direction */
-void move_sprite(struct Sprite* sprite, int dx, int dy);
+void sprite_move(struct Sprite* sprite, int dx, int dy);
 
 /* set a sprite postion */
-void position_sprite(struct Sprite* sprite, int x, int y);
+void sprite_position(struct Sprite* sprite, int x, int y);
 
 /* set a sprite tile offset */
 void sprite_set_offset(struct Sprite* sprite, int offset);
 
 /* the moon rover */
 struct Rover {
-    int side;
-    int counter;
+    /* sprites used for the body and wheels */
     struct Sprite* body;
     struct Sprite* wheels[3];
+    /* which side of the animation is displayed */
+    int side;
+    /* counter used to control the animation */
+    int counter;
+    /* the x and y position of the rover */
+    int x, y;
 };
 
 /* initialize the rover */
@@ -88,8 +93,8 @@ void rover_init(struct Rover* rover);
 void rover_left(struct Rover* rover);
 void rover_right(struct Rover* rover);
 
-/* flip the wheel animation in the rover */
-void rover_flip(struct Rover* rover);
+/* update the rover position and animation */
+void rover_update(struct Rover* rover, int scroll);
 
 #endif
 

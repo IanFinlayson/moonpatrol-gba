@@ -12,6 +12,7 @@
 #include "../maps/layer2.h"
 
 
+
 /* the sprite objects we have */
 struct Sprite* ship;
 
@@ -43,9 +44,8 @@ void setup_backgrounds() {
     /* set up layer 3 (ui) */
     init_background(3, 0, 19);
     unsigned short* bg3map = (unsigned short*)ScreenBaseBlock(19);
-    int i;
     /* zero out the text layer */
-    for (i = 0; i < 1024*2; i++) {
+    for (int i = 0; i < 1024*2; i++) {
         bg3map[i] = 0;
     }
 
@@ -58,7 +58,7 @@ void setup_backgrounds() {
 /* setup the sprite objects in memory */
 void setup_sprites() {
     /* clear all sprites out */
-    init_sprites();
+    sprite_clear();
 
     /* load the palette into object palette memory */
     dma_memcpy((void*) objects_palette, (void*) OBJECT_PALETTE_MEMORY,
@@ -70,7 +70,7 @@ void setup_sprites() {
 
 
     /* setup our space ship */
-    ship = setup_sprite(4, 50, 50, SIZE_32_16, 0, 0, 16, 0);
+    ship = sprite_init(4, 50, 50, SIZE_32_16, 0, 0, 16, 0);
 }
 
 
@@ -97,7 +97,7 @@ int main( ) {
     rover_init(&rover);
 
     /* the scroll for the game */
-    unsigned int x = 0;
+    unsigned int scroll = 0;
 
     /* we now loop forever displaying the image */
     while (1) {
@@ -105,9 +105,7 @@ int main( ) {
 		wait_vblank();
 
         /* we scroll right continuously in this game */
-        x++;
-
-        rover_flip(&rover);
+        scroll++;
 
         /* move the rover on user input */
         if (button_down(BUTTON_LEFT)) {
@@ -118,15 +116,18 @@ int main( ) {
         }
 
         /* parallax it up */
-        REG_BG0HOFS = x >> 2;
-        REG_BG1HOFS = x >> 1;
-        REG_BG2HOFS = x;
+        REG_BG0HOFS = scroll >> 2;
+        REG_BG1HOFS = scroll >> 1;
+        REG_BG2HOFS = scroll;
+
+        /* update the rover position */
+        rover_update(&rover, scroll);
 
         /* wait for vertical refresh again */
         wait_vblank();
 
         /* update all sprites on screen */
-        update_sprites(); 
+        sprite_update_all();
 
         /* delay for a little bit */
         delay(250);

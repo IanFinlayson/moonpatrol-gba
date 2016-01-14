@@ -69,7 +69,7 @@ void set_text(char* str, int row, int col, unsigned short* textmap) {
 struct Sprite sprites[128];
 
 /* function to initialize a sprite with its properties, and return a pointer */
-struct Sprite* setup_sprite(int index, int x, int y, enum SpriteSize size,
+struct Sprite* sprite_init(int index, int x, int y, enum SpriteSize size,
         int horizontal_flip, int vertical_flip, int tile_index, int priority) {
 
     /* setup the bits used for each shape/size possible */
@@ -117,29 +117,27 @@ struct Sprite* setup_sprite(int index, int x, int y, enum SpriteSize size,
 }
 
 /* update all of the spries on the screen */
-void update_sprites() {
+void sprite_update_all() {
     /* point a short* into the array of structs */
     unsigned short* temp = (unsigned short*) sprites; 
 
     /* copy them all over */
-    int i;
-    for(i = 0; i < 128 * 4; i++) {
+    for(int i = 0; i < 128 * 4; i++) {
         OBJECT_ATTRIBUTE_MEMOORY[i] = temp[i]; 
     }
 }
 
 /* setup all sprites */
-void init_sprites() {
+void sprite_clear() {
     /* move all sprites offscreen to hide them */
-    int i;
-    for(i = 0; i < 128; i++) {
+    for(int i = 0; i < 128; i++) {
         sprites[i].attribute0 = 160;
         sprites[i].attribute1 = 240;
     }
 }
 
 /* move a sprite in a direction */
-void move_sprite(struct Sprite* sprite, int dx, int dy) {
+void sprite_move(struct Sprite* sprite, int dx, int dy) {
     /* get the current y coordinate */
     int y = sprite->attribute0 & 0xff;
 
@@ -147,11 +145,11 @@ void move_sprite(struct Sprite* sprite, int dx, int dy) {
     int x = sprite->attribute1 & 0x1ff;
 
     /* move to the new location */
-    position_sprite(sprite, x + dx, y + dy);
+    sprite_position(sprite, x + dx, y + dy);
 }
 
 /* set a sprite postion */
-void position_sprite(struct Sprite* sprite, int x, int y) {
+void sprite_position(struct Sprite* sprite, int x, int y) {
     /* clear out the y coordinate */
     sprite->attribute0 &= 0xff00;
 
