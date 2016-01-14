@@ -14,6 +14,7 @@
 /* the moon rover */
 struct Rover {
     int side;
+    int counter;
     struct Sprite* body;
     struct Sprite* wheels[3];
 };
@@ -27,6 +28,7 @@ void init_rover(struct Rover* rover) {
         rover->wheels[i] = setup_sprite(1 + i, 104 + 12*i, 135, SIZE_8_8, 0, 0, 32, 0);
     }
     rover->side = 0;
+    rover->counter = 0;
 }
 
 /* move the rover left or right */
@@ -49,6 +51,12 @@ void rover_right(struct Rover* rover) {
 void rover_flip(struct Rover* rover) {
     int offset, i;
 
+    /* check if it's time to flip */
+    if (rover->counter < ROVER_WHEEL_FLIP) {
+        rover->counter++;
+        return;
+    }
+
     if (rover->side) {
         offset = 34;
         rover->side = 0;
@@ -61,6 +69,8 @@ void rover_flip(struct Rover* rover) {
         sprite_set_offset(rover->wheels[i], offset);
     }
 
+    /* reset the counter */
+    rover->counter = 0;
 }
 
 
@@ -149,7 +159,7 @@ int main( ) {
     init_rover(&rover);
 
     /* the scroll for the game */
-    int x = 0;
+    unsigned int x = 0;
 
     /* we now loop forever displaying the image */
     while (1) {
@@ -170,9 +180,9 @@ int main( ) {
         }
 
         /* parallax it up */
-        REG_BG0HOFS = x;
-        REG_BG1HOFS = x << 1;
-        REG_BG2HOFS = x << 2;
+        REG_BG0HOFS = x >> 2;
+        REG_BG1HOFS = x >> 1;
+        REG_BG2HOFS = x;
 
         /* wait for vertical refresh again */
         wait_vblank();
@@ -181,7 +191,7 @@ int main( ) {
         update_sprites(); 
 
         /* delay for a little bit */
-        delay(1800);
+        delay(250);
     }
 }
 

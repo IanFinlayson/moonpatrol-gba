@@ -7,7 +7,10 @@
 #define MOONPATROL_H
 
 /* the speed of the rover in pixels per frame */
-#define ROVER_SPEED 3
+#define ROVER_SPEED 1
+
+/* frames in between rover wheel flips */
+#define ROVER_WHEEL_FLIP 15
 
 /* wait for a vertical refresh */
 void wait_vblank(void);
