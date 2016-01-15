@@ -116,9 +116,9 @@ int main( ) {
         }
 
         /* parallax it up */
-        REG_BG0HOFS = scroll >> 2;
-        REG_BG1HOFS = scroll >> 1;
-        REG_BG2HOFS = scroll;
+        REG_BG0HOFS = scroll >> 4;
+        REG_BG1HOFS = scroll >> 2;
+        REG_BG2HOFS = scroll >> 1;
 
         /* update the rover position */
         rover_update(&rover, scroll);
