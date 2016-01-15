@@ -4,7 +4,7 @@
 KITHOME=/home/finlayson/gba/devkitadv
 
 CC=$(KITHOME)/bin/arm-agb-elf-gcc
-CFLAGS=-O3 -std=c99
+CFLAGS=-std=c99 -O3
 LFLAGS=-O3 -nostartfiles $(KITHOME)/arm-agb-elf/lib/crt0.o -lm
 TARGET=moonpatrol.gba
  

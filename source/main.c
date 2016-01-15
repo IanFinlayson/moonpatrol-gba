@@ -121,7 +121,7 @@ int main( ) {
         REG_BG2HOFS = scroll >> 1;
 
         /* update the rover position */
-        rover_update(&rover, scroll);
+        rover_update(&rover, scroll >> 1);
 
         /* wait for vertical refresh again */
         wait_vblank();

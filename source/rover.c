@@ -93,10 +93,14 @@ void rover_flip(struct Rover* rover) {
 
 /* update the rover Y position on screen */
 void rover_elevate(struct Rover* rover, int scroll) {
-    /* find the height of each wheel */
-    rover->y0 = 125 - ground_height[(rover->x + scroll) & 0xff];
-    rover->y1 = 125 - ground_height[(rover->x + scroll + 12) & 0xff];
-    rover->y2 = 125 - ground_height[(rover->x + scroll + 24) & 0xff];
+    /* find the height of each wheel
+     * 125 is the base height of the ground
+     * 4 is halfway across the tire (8 pixels wide)
+     * 12/24 are the distance added to each tire from the left
+     * & 0xff is the same thing as % 256 but faster */
+    rover->y0 = 125 - ground_height[(rover->x + scroll + 4) & 0xff];
+    rover->y1 = 125 - ground_height[(rover->x + scroll + 4 + 12) & 0xff];
+    rover->y2 = 125 - ground_height[(rover->x + scroll + 4 + 24) & 0xff];
 
     /* set the rover's position to that of the highest wheel */
     rover->y = rover->y0;
