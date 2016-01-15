@@ -84,6 +84,8 @@ struct Rover {
     int counter;
     /* the x and y position of the rover */
     int x, y;
+    /* the height of each wheel */
+    int y0, y1, y2;
 };
 
 /* initialize the rover */

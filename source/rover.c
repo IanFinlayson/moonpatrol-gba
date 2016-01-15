@@ -93,11 +93,15 @@ void rover_flip(struct Rover* rover) {
 
 /* update the rover Y position on screen */
 void rover_elevate(struct Rover* rover, int scroll) {
-    /* find the index into the ground_height array */
-    int index = (rover->x + scroll) % 256;
+    /* find the height of each wheel */
+    rover->y0 = 125 - ground_height[(rover->x + scroll) & 0xff];
+    rover->y1 = 125 - ground_height[(rover->x + scroll + 12) & 0xff];
+    rover->y2 = 125 - ground_height[(rover->x + scroll + 24) & 0xff];
 
-    /* set this as the rover's position */
-    rover->y = 125 - ground_height[index];
+    /* set the rover's position to that of the highest wheel */
+    rover->y = rover->y0;
+    if (rover->y > rover->y1) rover->y = rover->y1;
+    if (rover->y > rover->y2) rover->y = rover->y2;
 }
 
 /* flip the wheel animation in the rover and update it's position
@@ -108,7 +112,9 @@ void rover_update(struct Rover* rover, int scroll) {
 
     /* position the sprite */
     sprite_position(rover->body, rover->x, rover->y);
-    for (int i = 0; i < 3; i++) {
-        sprite_position(rover->wheels[i], rover->x + 12*i, rover->y + 10);
-    }
+    sprite_position(rover->wheels[0], rover->x, rover->y0 + 10);
+    sprite_position(rover->wheels[1], rover->x + 12, rover->y1 + 10);
+    sprite_position(rover->wheels[2], rover->x + 24, rover->y2 + 10);
 }
+
+
