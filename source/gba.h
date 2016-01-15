@@ -1,6 +1,6 @@
 /*
  * gba.h
- * this file contains definitions for the GBA hardware
+ * this file contains definitions for the GBA hardware registers and constants
  */
 
 #ifndef GBA_H
@@ -27,6 +27,10 @@
 
 /* the graphics display control register */
 #define REG_DISPCNT ((volatile unsigned long*) 0x4000000)
+
+/* screen dimenstions */
+#define SCREEN_WDITH 240
+#define SCREEN_HEIGHT 160
 
 /* the screen memory pointer */
 #define SCREEN ((volatile unsigned short*) 0x6000000)

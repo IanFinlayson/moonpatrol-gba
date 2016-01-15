@@ -11,8 +11,6 @@
 #include "../maps/layer1.h"
 #include "../maps/layer2.h"
 
-
-
 /* the sprite objects we have */
 struct Sprite* ship;
 

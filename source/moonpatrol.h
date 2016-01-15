@@ -6,12 +6,6 @@
 #ifndef MOONPATROL_H
 #define MOONPATROL_H
 
-/* the speed of the rover in pixels per frame */
-#define ROVER_SPEED 1
-
-/* frames in between rover wheel flips */
-#define ROVER_WHEEL_FLIP 15
-
 /* wait for a vertical refresh */
 void wait_vblank(void);
 
@@ -85,7 +79,7 @@ struct Rover {
     /* the x and y position of the rover */
     int x, y;
     /* the height of each wheel */
-    int y0, y1, y2;
+    int wheel_height[3];
 };
 
 /* initialize the rover */

@@ -1,25 +1,11 @@
 /*
  * graphics.c
- * this file contains graphics routines for the GBA in general
+ * this file contains graphics routines for the GBA in general such as
+ * dealing with background layers and sprite objects
  */
 
 #include "gba.h"
 #include "moonpatrol.h"
-
-/* function to use the GBA's hardware memory copy */
-void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode) {
-    /* ensure that one of the valid modes are passed */
-    if (mode != DMA_16_NOW && mode != DMA_32_NOW) {
-        return;
-    }
-
-    /* trigger the DMA hardware copy to run - the CPU is
-     * automatically suspended until the transfer is done */
-    REG_DMA_SOURCE = (unsigned int) source;
-    REG_DMA_DESTINATION = (unsigned int) dest;
-    REG_DMA_COUNT = count | mode;
-}
-
 
 /* initialize a background */
 void init_background(int bg, int priority, int scrnblk) {
