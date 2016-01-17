@@ -6,6 +6,11 @@
 #ifndef MOONPATROL_H
 #define MOONPATROL_H
 
+/* the scroll speeds */
+#define SCROLL_SLOW 3
+#define SCROLL_MEDIUM 4
+#define SCROLL_FAST 5
+
 /* wait for a vertical refresh */
 void wait_vblank(void);
 
@@ -72,12 +77,19 @@ struct Rover {
     /* sprites used for the body and wheels */
     struct Sprite* body;
     struct Sprite* wheels[3];
+
     /* which side of the animation is displayed */
     int side;
+
     /* counter used to control the animation */
-    int counter;
+    int anim_counter;
+
+    /* counter used to move the rover */
+    int move_counter;
+
     /* the x and y position of the rover */
     int x, y;
+
     /* the height of each wheel */
     int wheel_height[3];
 };

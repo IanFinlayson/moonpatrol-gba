@@ -12,8 +12,13 @@
 /* the pixels between each wheel when drawn */
 #define WHEEL_SPACING 12
 
-/* the speed of the rover in pixels per frame */
-#define ROVER_SPEED 1
+/* the speed of the rover is one pixel per this many frames */
+#define ROVER_INVERSE_SPEED 2
+
+/* the x and y boundaries for the left side of the rover */
+#define GAP 70
+#define ROVER_LEFT_BOUND GAP
+#define ROVER_RIGHT_BOUND ((240 - GAP) - 32)
 
 /* frames in between rover wheel flips */
 #define ROVER_WHEEL_FLIP 15
@@ -82,22 +87,37 @@ void rover_init(struct Rover* rover) {
 
     /* start at the first animation frame for the wheels */
     rover->side = 0;
-    rover->counter = 0;
+    rover->anim_counter = 0;
+    rover->move_counter = 0;
 }
 
 /* move the rover left or right */
 void rover_left(struct Rover* rover) {
-    rover->x -= ROVER_SPEED;
+    if (rover->x >  ROVER_LEFT_BOUND) {
+        if (rover->move_counter == ROVER_INVERSE_SPEED) {
+            rover->move_counter = 0;
+            rover->x--;
+        } else {
+            rover->move_counter++;
+        }
+    }
 }
 void rover_right(struct Rover* rover) {
-    rover->x += ROVER_SPEED;
+    if (rover->x < ROVER_RIGHT_BOUND) {
+        if (rover->move_counter == ROVER_INVERSE_SPEED) {
+            rover->move_counter = 0;
+            rover->x++;
+        } else {
+            rover->move_counter++;
+        }
+    }
 }
 
 /* flip the rover animation */
 void rover_flip(struct Rover* rover) {
     /* check if it's not time to flip yet */
-    if (rover->counter < ROVER_WHEEL_FLIP) {
-        rover->counter++;
+    if (rover->anim_counter < ROVER_WHEEL_FLIP) {
+        rover->anim_counter++;
         return;
     }
 
@@ -119,7 +139,7 @@ void rover_flip(struct Rover* rover) {
     }
 
     /* reset the counter */
-    rover->counter = 0;
+    rover->anim_counter = 0;
 }
 
 /* update the rover Y position on screen */

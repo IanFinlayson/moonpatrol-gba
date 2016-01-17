@@ -96,6 +96,7 @@ int main( ) {
 
     /* the scroll for the game */
     unsigned int scroll = 0;
+    int scroll_speed = SCROLL_MEDIUM;
 
     /* we now loop forever displaying the image */
     while (1) {
@@ -103,23 +104,27 @@ int main( ) {
 		wait_vblank();
 
         /* we scroll right continuously in this game */
-        scroll++;
+        scroll += scroll_speed;
 
         /* move the rover on user input */
         if (button_down(BUTTON_LEFT)) {
+            scroll_speed = SCROLL_SLOW;
             rover_left(&rover);
         }
-        if (button_down(BUTTON_RIGHT)) {
+        else if (button_down(BUTTON_RIGHT)) {
+            scroll_speed = SCROLL_FAST;
             rover_right(&rover);
+        } else {
+            scroll_speed = SCROLL_MEDIUM;
         }
 
         /* parallax it up */
-        REG_BG0HOFS = scroll >> 4;
-        REG_BG1HOFS = scroll >> 2;
-        REG_BG2HOFS = scroll >> 1;
+        REG_BG0HOFS = scroll >> 8;
+        REG_BG1HOFS = scroll >> 4;
+        REG_BG2HOFS = scroll >> 2;
 
         /* update the rover position */
-        rover_update(&rover, scroll >> 1);
+        rover_update(&rover, scroll >> 2);
 
         /* wait for vertical refresh again */
         wait_vblank();
