@@ -118,6 +118,11 @@ int main( ) {
             scroll_speed = SCROLL_MEDIUM;
         }
 
+        /* jump when the A button is pressed */
+        if (button_down(BUTTON_A)) {
+            rover_jump(&rover);
+        }
+
         /* parallax it up */
         REG_BG0HOFS = scroll >> 8;
         REG_BG1HOFS = scroll >> 4;

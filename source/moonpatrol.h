@@ -101,6 +101,9 @@ void rover_init(struct Rover* rover);
 void rover_left(struct Rover* rover);
 void rover_right(struct Rover* rover);
 
+/* jump the rover into the air */
+void rover_jump(struct Rover* rover);
+
 /* update the rover position and animation */
 void rover_update(struct Rover* rover, int scroll);
 

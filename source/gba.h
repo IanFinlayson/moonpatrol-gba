@@ -89,10 +89,16 @@
 #define DMA_16_NOW (DMA_ENABLE | DMA_TIMING_IMMEDIATE | DMA_16)
 
 /* button identifiers */
-#define BUTTON_RIGHT 0x10
-#define BUTTON_LEFT  0x20
-#define BUTTON_UP    0x40
-#define BUTTON_DOWN  0x80
+#define BUTTON_A 0x001
+#define BUTTON_B 0x002
+#define BUTTON_SELECT 0x004
+#define BUTTON_START 0x008
+#define BUTTON_RIGHT 0x010
+#define BUTTON_LEFT 0x020
+#define BUTTON_UP 0x040
+#define BUTTON_DOWN 0x080
+#define BUTTON_R 0x100
+#define BUTTON_L 0x200
 #define BUTTONS (*(volatile unsigned int*) 0x04000130)
 
 /* the vertical refresh register */

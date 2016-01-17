@@ -175,3 +175,10 @@ void rover_update(struct Rover* rover, int scroll) {
     }
 }
 
+/* jump the rover into the air */
+void rover_jump(struct Rover* rover) {
+    /* TODO */
+
+
+}
+
