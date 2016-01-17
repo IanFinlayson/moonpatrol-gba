@@ -26,6 +26,12 @@
 /* the base height of the ground */
 #define GROUND_HEIGHT 125
 
+/* the jump speed of the rover */
+#define JUMP_SPEED 15
+
+/* the speed at which we decelerate */
+#define FALL_COUNT 20
+
 /* the pixels down the wheels are from the top of the rover */
 #define WHEEL_DROP 9
 
@@ -89,6 +95,11 @@ void rover_init(struct Rover* rover) {
     rover->side = 0;
     rover->anim_counter = 0;
     rover->move_counter = 0;
+
+    /* we are not jumping to start */
+    rover->dy = 0;
+    rover->fall_counter = 0;
+    rover->jumping = 0;
 }
 
 /* move the rover left or right */
@@ -167,6 +178,28 @@ void rover_update(struct Rover* rover, int scroll) {
     rover_flip(rover);
     rover_elevate(rover, scroll); 
 
+    /* update position based on jumping */
+    if (rover->jumping) {
+        /* adjust for jumping */
+        rover->y += rover->dy;
+        for (int i = 0; i < NUM_WHEELS; i++) {
+            rover->wheel_height[i] = rover->y;
+        }
+
+        /* decelerate */
+        if (rover->fall_counter == FALL_COUNT) {
+            rover->dy++;
+            rover->fall_counter = 0;
+        } else {
+            rover->fall_counter++;
+        }
+    }
+
+    /* if we are at ground level again, stop jumping */
+    if (rover->y > GROUND_HEIGHT) {
+        rover->jumping = 0;
+    }
+
     /* position the sprite */
     sprite_position(rover->body, rover->x, rover->y);
     for (int i = 0; i < NUM_WHEELS; i++) {
@@ -177,8 +210,11 @@ void rover_update(struct Rover* rover, int scroll) {
 
 /* jump the rover into the air */
 void rover_jump(struct Rover* rover) {
-    /* TODO */
-
-
+    /* no double jumps allowed */
+    if (!rover->jumping) {
+        rover->dy = -JUMP_SPEED;
+        rover->jumping = 1;
+        rover->fall_counter = 0;
+    }
 }
 

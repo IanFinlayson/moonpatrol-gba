@@ -90,6 +90,11 @@ struct Rover {
     /* the x and y position of the rover */
     int x, y;
 
+    /* the y speed of the rover and whether we are jumping */
+    int dy;
+    int jumping;
+    int fall_counter;
+
     /* the height of each wheel */
     int wheel_height[3];
 };
