@@ -23,21 +23,24 @@
 /* frames in between rover wheel flips */
 #define ROVER_WHEEL_FLIP 15
 
-/* the base height of the ground */
-#define GROUND_HEIGHT 125
-
-/* the jump speed of the rover */
-#define JUMP_SPEED 15
-
-/* the speed at which we decelerate */
-#define FALL_COUNT 20
-
 /* the pixels down the wheels are from the top of the rover */
 #define WHEEL_DROP 9
+
+/* the base height of the ground */
+#define GROUND_HEIGHT 125
 
 /* the tile offset in our objects image that the wheel frames are */
 #define WHEEL_FRAME_1 32
 #define WHEEL_FRAME_2 34
+
+/* the units here are 1/256 pixels
+ * jump speed is the pixels/256 our y speed is set to on jumping
+ * gravity is the pixels/256/second/second we lose on speed each frame */
+#define JUMP_SPEED 130
+#define GRAVITY 2
+
+/* the shift amount to convert pixels to/from pixels/256 */
+#define VERT_SHIFT_AMOUNT 8
 
 /* an array storing the ground height at every position, this is relative
  * to the lowest height of the ground.  this is used in calculating what
@@ -98,7 +101,6 @@ void rover_init(struct Rover* rover) {
 
     /* we are not jumping to start */
     rover->dy = 0;
-    rover->fall_counter = 0;
     rover->jumping = 0;
 }
 
@@ -158,15 +160,16 @@ void rover_elevate(struct Rover* rover, int scroll) {
     /* find the height of each wheel
      * & 0xff is the same thing as % 256 but faster */
     for (int i = 0; i < NUM_WHEELS; i++) {
-        rover->wheel_height[i] = GROUND_HEIGHT - ground_height[(rover->x +
-                scroll + (WHEEL_SIZE >> 1) + WHEEL_SPACING * i) & 0xff];
+        rover->wheel_height[i] = (GROUND_HEIGHT - ground_height[(rover->x +
+                scroll + (WHEEL_SIZE >> 1) + WHEEL_SPACING * i) & 0xff])
+                << VERT_SHIFT_AMOUNT;
     }
 
     /* set the rover's position to that of the highest wheel */
     rover->y = rover->wheel_height[0];
     for (int i = 1; i < NUM_WHEELS; i++) {
         if (rover->y > rover->wheel_height[i]) {
-            rover->y = rover->wheel_height[i];
+            rover->y = rover->wheel_height[i];;
         }
     }
 }
@@ -176,35 +179,35 @@ void rover_elevate(struct Rover* rover, int scroll) {
 void rover_update(struct Rover* rover, int scroll) {
     /* flip the animation, and calculate the rover elevation */
     rover_flip(rover);
-    rover_elevate(rover, scroll); 
 
     /* update position based on jumping */
     if (rover->jumping) {
         /* adjust for jumping */
         rover->y += rover->dy;
+
+        /* set wheels to the same height (shifted down a scoche) */
         for (int i = 0; i < NUM_WHEELS; i++) {
-            rover->wheel_height[i] = rover->y;
+            rover->wheel_height[i] = rover->y + 512;
         }
 
         /* decelerate */
-        if (rover->fall_counter == FALL_COUNT) {
-            rover->dy++;
-            rover->fall_counter = 0;
-        } else {
-            rover->fall_counter++;
-        }
+        rover->dy += GRAVITY;
+
+    } else {
+        /* else position based on the ground */
+        rover_elevate(rover, scroll); 
     }
 
     /* if we are at ground level again, stop jumping */
-    if (rover->y > GROUND_HEIGHT) {
+    if (rover->jumping && (rover->y >> VERT_SHIFT_AMOUNT) > GROUND_HEIGHT) {
         rover->jumping = 0;
     }
 
     /* position the sprite */
-    sprite_position(rover->body, rover->x, rover->y);
+    sprite_position(rover->body, rover->x, rover->y >> VERT_SHIFT_AMOUNT);
     for (int i = 0; i < NUM_WHEELS; i++) {
         sprite_position(rover->wheels[i], rover->x + WHEEL_SPACING * i,
-                rover->wheel_height[i] + WHEEL_DROP);
+                (rover->wheel_height[i] >> VERT_SHIFT_AMOUNT) + WHEEL_DROP);
     }
 }
 
@@ -212,9 +215,9 @@ void rover_update(struct Rover* rover, int scroll) {
 void rover_jump(struct Rover* rover) {
     /* no double jumps allowed */
     if (!rover->jumping) {
+        /* begin moving up! */
         rover->dy = -JUMP_SPEED;
         rover->jumping = 1;
-        rover->fall_counter = 0;
     }
 }
 

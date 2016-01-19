@@ -87,13 +87,15 @@ struct Rover {
     /* counter used to move the rover */
     int move_counter;
 
-    /* the x and y position of the rover */
+    /* the x and y position of the rover
+     * the y, and the dy, and wheel_height below are actually measured in 1/256
+     * pixels.  This allows for fixed point math to implement our jumping
+     * mechanics */
     int x, y;
 
     /* the y speed of the rover and whether we are jumping */
     int dy;
     int jumping;
-    int fall_counter;
 
     /* the height of each wheel */
     int wheel_height[3];
