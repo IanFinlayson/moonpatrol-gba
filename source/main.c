@@ -14,6 +14,8 @@
 /* the sprite objects we have */
 struct Sprite* ship;
 
+struct Sprite* hazard;
+
 /* setup the background images */
 void setup_backgrounds() {
     /* load the palette into background palette memory */
@@ -69,6 +71,8 @@ void setup_sprites() {
 
     /* setup our space ship */
     ship = sprite_init(4, 50, 50, SIZE_32_16, 0, 0, 16, 0);
+
+    hazard = sprite_init(5, 300, 139, SIZE_32_8, 0, 0, 36, 0);
 }
 
 
@@ -127,6 +131,9 @@ int main( ) {
         REG_BG0HOFS = scroll >> 5;
         REG_BG1HOFS = scroll >> 4;
         REG_BG2HOFS = scroll >> 2;
+
+        sprite_move(hazard, -1, 0);
+
 
         /* update the rover position */
         rover_update(&rover, scroll >> 2);
