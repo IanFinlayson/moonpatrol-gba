@@ -124,7 +124,7 @@ int main( ) {
         }
 
         /* parallax it up */
-        REG_BG0HOFS = scroll >> 8;
+        REG_BG0HOFS = scroll >> 5;
         REG_BG1HOFS = scroll >> 4;
         REG_BG2HOFS = scroll >> 2;
 
