@@ -29,7 +29,7 @@
 #define REG_DISPCNT ((volatile unsigned long*) 0x4000000)
 
 /* screen dimenstions */
-#define SCREEN_WDITH 240
+#define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 160
 
 /* the screen memory pointer */

@@ -19,7 +19,7 @@
 
 /* the sprite objects we have */
 struct Sprite* ship;
-
+unsigned short* bg3map;
 /* setup the background images */
 void setup_backgrounds() {
     /* load the palette into background palette memory */
@@ -47,7 +47,7 @@ void setup_backgrounds() {
 
     /* set up layer 3 (ui) */
     init_background(3, 0, 19);
-    unsigned short* bg3map = (unsigned short*)ScreenBaseBlock(19);
+    bg3map = (unsigned short*)ScreenBaseBlock(19);
     /* zero out the text layer */
     for (int i = 0; i < 1024*2; i++) {
         bg3map[i] = 0;
@@ -55,7 +55,7 @@ void setup_backgrounds() {
 
 
     /* FIXME temporary text */
-    set_text("Hello!", 0, 0, bg3map);
+    //set_text("Hello!", 0, 0, bg3map);
 }
 
 
@@ -92,7 +92,7 @@ int main( ) {
     setup_sprites();
 
     /* setup the obstacles */
-    obstacles_init();
+    obstacles_init(bg3map);
 
     /* scroll the bgs up a bit (rather than adjust the maps) */
     REG_BG0VOFS = 5;

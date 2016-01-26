@@ -126,8 +126,8 @@ void sprite_clear() {
 
     /* move all sprites offscreen to hide them */
     for(int i = 0; i < 128; i++) {
-        sprites[i].attribute0 = 160;
-        sprites[i].attribute1 = 240;
+        sprites[i].attribute0 = SCREEN_HEIGHT;
+        sprites[i].attribute1 = SCREEN_WIDTH;
     }
 }
 

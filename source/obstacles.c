@@ -1,6 +1,9 @@
 /* obstacles.c
  * functions related to the two types of obstacles: pits and mounds */
 
+#include <stdlib.h>
+
+#include "gba.h"
 #include "moonpatrol.h"
 
 /* how many obstacles there are */
@@ -13,11 +16,14 @@
 struct Obstacle obstacles[NUM_OBSTACLES];
 
 /* setup the obstacles */
-void obstacles_init() {
+void obstacles_init(unsigned short* bg3map) {
     
-    /* TODO randomly position them around */
+    /* randomly position them around */
     for (int i = 0; i < NUM_OBSTACLES; i++) {
-        obstacles[i].start_x = 100 << i;
+        obstacles[i].start_x = 300 * (i + 1);
+        char str[32];
+        sprintf(str, "%d", obstacles[i].start_x);
+        set_text(str, i, 0, bg3map);
     }
 
     /* setup the sprites */
@@ -42,11 +48,24 @@ void obstacles_init() {
 /* update the obstacle position relative to the scrolling */
 void obstacles_update(int scroll) {
     for (int i = 0; i < NUM_OBSTACLES; i++) {
+        /* update position relative to scrolling */
         obstacles[i].x = obstacles[i].start_x - scroll;
-        sprite_position(obstacles[i].sprite, obstacles[i].x, obstacles[i].y);
+
+        /* check if off screen */
+        if (obstacles[i].x < 0) {
+            /* move it down a ways again */
+            obstacles[i].start_x = scroll + 1200;
+            obstacles[i].x = obstacles[i].start_x - scroll;
+        }
+
+        /* if on screen show it, otherwise hide it */
+        if (obstacles[i].x >= 0 && obstacles[i].x < SCREEN_WIDTH) {
+            sprite_position(obstacles[i].sprite, obstacles[i].x, obstacles[i].y);
+        } else {
+            sprite_position(obstacles[i].sprite, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+
     }
 }
-
-
 
 
