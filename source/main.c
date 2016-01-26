@@ -11,10 +11,14 @@
 #include "../maps/layer1.h"
 #include "../maps/layer2.h"
 
+/* control the paralax effect of the layers, and ground speed which affects the
+ * gameplay a lot - these are rshift amounts, so larger means slower */
+#define SCROLL_MOUNTAINS 5
+#define SCROLL_HILLS 4
+#define SCROLL_GROUND 2
+
 /* the sprite objects we have */
 struct Sprite* ship;
-
-struct Sprite* hazard;
 
 /* setup the background images */
 void setup_backgrounds() {
@@ -70,9 +74,7 @@ void setup_sprites() {
 
 
     /* setup our space ship */
-    ship = sprite_init(4, 50, 50, SIZE_32_16, 0, 0, 16, 0);
-
-    hazard = sprite_init(5, 300, 139, SIZE_32_8, 0, 0, 36, 0);
+    ship = sprite_init(50, 50, SIZE_32_16, 0, 0, 16, 0);
 }
 
 
@@ -88,6 +90,9 @@ int main( ) {
 
     /* setup the sprites */
     setup_sprites();
+
+    /* setup the obstacles */
+    obstacles_init();
 
     /* scroll the bgs up a bit (rather than adjust the maps) */
     REG_BG0VOFS = 5;
@@ -128,15 +133,15 @@ int main( ) {
         }
 
         /* parallax it up */
-        REG_BG0HOFS = scroll >> 5;
-        REG_BG1HOFS = scroll >> 4;
-        REG_BG2HOFS = scroll >> 2;
+        REG_BG0HOFS = scroll >> SCROLL_MOUNTAINS;
+        REG_BG1HOFS = scroll >> SCROLL_HILLS;
+        REG_BG2HOFS = scroll >> SCROLL_GROUND;
 
-        sprite_move(hazard, -1, 0);
-
+        /* update the obstacle positions */
+        obstacles_update(scroll >> SCROLL_GROUND);
 
         /* update the rover position */
-        rover_update(&rover, scroll >> 2);
+        rover_update(&rover, scroll >> SCROLL_GROUND);
 
         /* wait for vertical refresh again */
         wait_vblank();

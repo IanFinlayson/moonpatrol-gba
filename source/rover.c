@@ -88,9 +88,9 @@ void rover_init(struct Rover* rover) {
     rover->y = GROUND_HEIGHT;
 
     /* setup our sprites */
-    rover->body = sprite_init(0, rover->x, rover->y, SIZE_32_16, 0, 0, 0, 1);
+    rover->body = sprite_init(rover->x, rover->y, SIZE_32_16, 0, 0, 0, 1);
     for (int i = 0; i < NUM_WHEELS; i++) {
-        rover->wheels[i] = sprite_init(1 + i, rover->x + WHEEL_SPACING * i,
+        rover->wheels[i] = sprite_init(rover->x + WHEEL_SPACING * i,
                 rover->y + 10, SIZE_8_8, 0, 0, WHEEL_FRAME_1, 0);
     }
 

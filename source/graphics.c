@@ -54,9 +54,15 @@ void set_text(char* str, int row, int col, unsigned short* textmap) {
 /* array of all of the 128 sprite objects we have */
 struct Sprite sprites[128];
 
+/* the next available sprite index */
+int next_sprite_index = 0;
+
 /* function to initialize a sprite with its properties, and return a pointer */
-struct Sprite* sprite_init(int index, int x, int y, enum SpriteSize size,
+struct Sprite* sprite_init(int x, int y, enum SpriteSize size,
         int horizontal_flip, int vertical_flip, int tile_index, int priority) {
+
+    /* grab the next index */
+    int index = next_sprite_index++;
 
     /* setup the bits used for each shape/size possible */
     int size_bits, shape_bits;
@@ -115,6 +121,9 @@ void sprite_update_all() {
 
 /* setup all sprites */
 void sprite_clear() {
+    /* clear the index counter */
+    next_sprite_index = 0;
+
     /* move all sprites offscreen to hide them */
     for(int i = 0; i < 128; i++) {
         sprites[i].attribute0 = 160;

@@ -40,6 +40,6 @@ clean:
 	rm -f $(TARGET) $(OBJS) bin/moonpatrol.elf tags
 
 # create ctags index
-tags:
+tags: $(SRCS) $(HDRS)
 	ctags $(SRCS) $(HDRS)
 

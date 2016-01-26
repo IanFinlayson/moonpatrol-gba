@@ -54,7 +54,7 @@ enum SpriteSize {
 };
 
 /* function to initialize a sprite with its properties, and return a pointer */
-struct Sprite* sprite_init(int index, int x, int y, enum SpriteSize size,
+struct Sprite* sprite_init(int x, int y, enum SpriteSize size,
         int horizontal_flip, int vertical_flip, int tile_index, int priority);
 
 /* update all sprite positions on screen - should be drawn after refresh */
@@ -113,6 +113,16 @@ void rover_jump(struct Rover* rover);
 
 /* update the rover position and animation */
 void rover_update(struct Rover* rover, int scroll);
+
+/* represents one obstacle, either a pit or a mound */
+struct Obstacle {
+    int start_x, x, y;
+    int width;
+    struct Sprite* sprite;
+};
+
+void obstacles_init();
+void obstacles_update(int scroll);
 
 #endif
 
