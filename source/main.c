@@ -92,7 +92,7 @@ int main( ) {
     setup_sprites();
 
     /* setup the obstacles */
-    obstacles_init(bg3map);
+    obstacles_init();
 
     /* scroll the bgs up a bit (rather than adjust the maps) */
     REG_BG0VOFS = 5;
