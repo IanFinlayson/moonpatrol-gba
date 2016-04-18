@@ -143,6 +143,11 @@ int main( ) {
         /* update the rover position */
         rover_update(&rover, scroll >> SCROLL_GROUND);
 
+        /* check if the rover has crashed into an obstacle */
+        if (obstacles_crash(&rover)) {
+            delay(999999);
+        }
+
         /* wait for vertical refresh again */
         wait_vblank();
 
