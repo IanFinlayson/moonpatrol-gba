@@ -81,6 +81,7 @@ int obstacles_crash(struct Rover* rover) {
     return 0;
 }
 
+#if 0
 /* the moon rover */
 struct Rover {
     /* sprites used for the body and wheels */
@@ -109,3 +110,4 @@ struct Rover {
     /* the height of each wheel */
     int wheel_height[3];
 };
+#endif
