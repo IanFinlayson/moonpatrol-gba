@@ -21,9 +21,6 @@ void obstacles_init(unsigned short* bg3map) {
     /* randomly position them around */
     for (int i = 0; i < NUM_OBSTACLES; i++) {
         obstacles[i].start_x = 300 * (i + 1);
-        char str[32];
-        sprintf(str, "%d", obstacles[i].start_x);
-        set_text(str, i, 0, bg3map);
     }
 
     /* setup the sprites */

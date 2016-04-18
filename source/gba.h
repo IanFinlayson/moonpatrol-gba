@@ -42,12 +42,8 @@
 #define REG_BG3CNT (*(volatile unsigned short*) 0x400000e)
 
 /* defines for laying out tile memory */
-#define SCREEN_SHIFT 8
 #define CharBaseBlock(n) (((n) * 0x4000) + 0x6000000)
 #define ScreenBaseBlock(n) (((n) * 0x800) + 0x6000000)
-
-/* sets up 256 color mode for tile maps */
-#define BG_COLOR256 0x80
 
 /* identify palette memory */
 #define BG_PALETTE_MEMORY ((volatile unsigned short*) 0x5000000)

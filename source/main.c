@@ -22,6 +22,8 @@ struct Sprite* ship;
 unsigned short* bg3map;
 /* setup the background images */
 void setup_backgrounds() {
+    int x = 4;
+
     /* load the palette into background palette memory */
     dma_memcpy((void*) background_palette, (void*) BG_PALETTE_MEMORY,
             256, DMA_16_NOW);
@@ -53,9 +55,10 @@ void setup_backgrounds() {
         bg3map[i] = 0;
     }
 
-
     /* FIXME temporary text */
-    //set_text("Hello!", 0, 0, bg3map);
+    char msg[32];
+    sprintf(msg, "%p", &x);
+    set_text(msg, 0, 0, bg3map);
 }
 
 
