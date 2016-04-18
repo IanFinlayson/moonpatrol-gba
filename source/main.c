@@ -95,7 +95,7 @@ int main( ) {
     setup_sprites();
 
     /* setup the obstacles */
-    obstacles_init(bg3map);
+    obstacles_init();
 
     /* scroll the bgs up a bit (rather than adjust the maps) */
     REG_BG0VOFS = 5;
@@ -145,6 +145,11 @@ int main( ) {
 
         /* update the rover position */
         rover_update(&rover, scroll >> SCROLL_GROUND);
+
+        /* check if the rover has crashed into an obstacle */
+        if (obstacles_crash(&rover)) {
+            delay(999999);
+        }
 
         /* wait for vertical refresh again */
         wait_vblank();

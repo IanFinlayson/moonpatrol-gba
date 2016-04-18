@@ -7,20 +7,27 @@
 #include "moonpatrol.h"
 
 /* how many obstacles there are */
-#define NUM_OBSTACLES 4
+#define NUM_OBSTACLES 6
 
+/* offset into the image file */
 #define PIT_OFFSET 36
 #define MOUND_OFFSET 44
+
+/*  get a random offset to add to obstacle position */
+int rand_offset() {
+    /* random number between -128 and 128 */
+    return (rand() & 0xff) - 128;
+}
 
 /* the four total obstacles are created here */
 struct Obstacle obstacles[NUM_OBSTACLES];
 
 /* setup the obstacles */
-void obstacles_init(unsigned short* bg3map) {
-    
+void obstacles_init() {
+
     /* randomly position them around */
     for (int i = 0; i < NUM_OBSTACLES; i++) {
-        obstacles[i].start_x = 300 * (i + 1);
+        obstacles[i].start_x = 300 * (i + 1) + rand_offset();
     }
 
     /* setup the sprites */
@@ -51,7 +58,7 @@ void obstacles_update(int scroll) {
         /* check if off screen */
         if (obstacles[i].x < 0) {
             /* move it down a ways again */
-            obstacles[i].start_x = scroll + 1200;
+            obstacles[i].start_x = scroll + 1200 + rand_offset();
             obstacles[i].x = obstacles[i].start_x - scroll;
         }
 
@@ -61,8 +68,44 @@ void obstacles_update(int scroll) {
         } else {
             sprite_position(obstacles[i].sprite, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
-
     }
 }
 
+/* check if the rover has crashed into an obstacle or not */
+int obstacles_crash(struct Rover* rover) {
+    for (int i = 0; i < NUM_OBSTACLES; i++) {
 
+
+    }
+
+    return 0;
+}
+
+/* the moon rover */
+struct Rover {
+    /* sprites used for the body and wheels */
+    struct Sprite* body;
+    struct Sprite* wheels[3];
+
+    /* which side of the animation is displayed */
+    int side;
+
+    /* counter used to control the animation */
+    int anim_counter;
+
+    /* counter used to move the rover */
+    int move_counter;
+
+    /* the x and y position of the rover
+     * the y, and the dy, and wheel_height below are actually measured in 1/256
+     * pixels.  This allows for fixed point math to implement our jumping
+     * mechanics */
+    int x, y;
+
+    /* the y speed of the rover and whether we are jumping */
+    int dy;
+    int jumping;
+
+    /* the height of each wheel */
+    int wheel_height[3];
+};
