@@ -27,7 +27,7 @@ void obstacles_init() {
 
     /* randomly position them around */
     for (int i = 0; i < NUM_OBSTACLES; i++) {
-        obstacles[i].start_x = 300 * (i + 1) + rand_offset();
+        obstacles[i].start_x = 300 * (i + 1) + rand_offset() + 200;
     }
 
     /* setup the sprites */

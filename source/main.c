@@ -54,11 +54,6 @@ void setup_backgrounds() {
     for (int i = 0; i < 1024*2; i++) {
         bg3map[i] = 0;
     }
-
-    /* FIXME temporary text */
-    char msg[32];
-    sprintf(msg, "%p", &x);
-    set_text(msg, 0, 0, bg3map);
 }
 
 
