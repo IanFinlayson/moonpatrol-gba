@@ -27,7 +27,7 @@ void obstacles_init() {
 
     /* randomly position them around */
     for (int i = 0; i < NUM_OBSTACLES; i++) {
-        obstacles[i].start_x = 300 * (i + 1) + rand_offset() + 200;
+        obstacles[i].start_x = 300 * (i + 1) + rand_offset() + 300;
     }
 
     /* setup the sprites */
@@ -72,42 +72,21 @@ void obstacles_update(int scroll) {
 }
 
 /* check if the rover has crashed into an obstacle or not */
-int obstacles_crash(struct Rover* rover) {
+int obstacles_crash(struct Rover* rover, int scroll) {
     for (int i = 0; i < NUM_OBSTACLES; i++) {
-
-
+        /* if rover's right side is past obstacles left side */
+        if ((rover->x + 32) > obstacles[i].x) {
+            /* if rover's left end is not past obstacles right side */
+            if (rover->x < (obstacles[i].x + 24)) {
+                /* if rover is on ground */
+                if (!rover->jumping) {
+                    return 1;
+                }
+            }
+        }
     }
 
     return 0;
 }
 
-#if 0
-/* the moon rover */
-struct Rover {
-    /* sprites used for the body and wheels */
-    struct Sprite* body;
-    struct Sprite* wheels[3];
 
-    /* which side of the animation is displayed */
-    int side;
-
-    /* counter used to control the animation */
-    int anim_counter;
-
-    /* counter used to move the rover */
-    int move_counter;
-
-    /* the x and y position of the rover
-     * the y, and the dy, and wheel_height below are actually measured in 1/256
-     * pixels.  This allows for fixed point math to implement our jumping
-     * mechanics */
-    int x, y;
-
-    /* the y speed of the rover and whether we are jumping */
-    int dy;
-    int jumping;
-
-    /* the height of each wheel */
-    int wheel_height[3];
-};
-#endif
