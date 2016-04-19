@@ -123,7 +123,7 @@ struct Obstacle {
 
 void obstacles_init();
 void obstacles_update(int scroll);
-int obstacles_crash(struct Rover* rover);
+int obstacles_crash(struct Rover* rover, int scroll);
 
 #endif
 

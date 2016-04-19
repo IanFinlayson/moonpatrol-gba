@@ -54,11 +54,6 @@ void setup_backgrounds() {
     for (int i = 0; i < 1024*2; i++) {
         bg3map[i] = 0;
     }
-
-    /* FIXME temporary text */
-    char msg[32];
-    sprintf(msg, "%p", &x);
-    set_text(msg, 0, 0, bg3map);
 }
 
 
@@ -147,7 +142,7 @@ int main( ) {
         rover_update(&rover, scroll >> SCROLL_GROUND);
 
         /* check if the rover has crashed into an obstacle */
-        if (obstacles_crash(&rover)) {
+        if (obstacles_crash(&rover, scroll >> SCROLL_GROUND)) {
             delay(999999);
         }
 
