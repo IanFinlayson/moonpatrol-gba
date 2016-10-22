@@ -41,7 +41,6 @@ void set_text(char* str, int row, int col, unsigned short* textmap) {
 
     /* for each character */
     while (*str) {
-
         /* place this character in the map */
         textmap[index] = base + (*str - missing);
 
@@ -60,7 +59,6 @@ int next_sprite_index = 0;
 /* function to initialize a sprite with its properties, and return a pointer */
 struct Sprite* sprite_init(int x, int y, enum SpriteSize size,
         int horizontal_flip, int vertical_flip, int tile_index, int priority) {
-
     /* grab the next index */
     int index = next_sprite_index++;
 

@@ -6,7 +6,7 @@
 #ifndef GBA_H
 #define GBA_H
 
-/* the mode 0 flag */
+/* the mode flags */
 #define MODE_0 0x0
 #define MODE_1 0x1
 #define MODE_2 0x2
@@ -14,7 +14,7 @@
 #define MODE_4 0x4
 #define MODE_5 0x5
 
-/* the flag to enable various background layers */
+/* the flags to enable various background layers */
 #define BG0_ENABLE 0x100
 #define BG1_ENABLE 0x200
 #define BG2_ENABLE 0x400
@@ -35,7 +35,7 @@
 /* the screen memory pointer */
 #define SCREEN ((volatile unsigned short*) 0x6000000)
 
-/* control register for BG0 */
+/* control registers for background controls */
 #define REG_BG0CNT (*(volatile unsigned short*) 0x4000008)
 #define REG_BG1CNT (*(volatile unsigned short*) 0x400000a)
 #define REG_BG2CNT (*(volatile unsigned short*) 0x400000c)
@@ -45,7 +45,7 @@
 #define CharBaseBlock(n) (((n) * 0x4000) + 0x6000000)
 #define ScreenBaseBlock(n) (((n) * 0x800) + 0x6000000)
 
-/* identify palette memory */
+/* identify palette memorys */
 #define BG_PALETTE_MEMORY ((volatile unsigned short*) 0x5000000)
 #define OBJECT_PALETTE_MEMORY ((volatile unsigned short*) 0x5000200)
 
@@ -65,15 +65,13 @@
 #define REG_BG3HOFS (*(volatile unsigned short*) 0x400001c)
 #define REG_BG3VOFS (*(volatile unsigned short*) 0x400001e)
 
-/* the registers which trigeer a DMA operation to start */
+/* the registers which trigeer DMA operations to start */
 #define REG_DMA_SOURCE *(volatile unsigned int*) 0x40000D4
 #define REG_DMA_DESTINATION *(volatile unsigned int*) 0x40000D8
 #define REG_DMA_COUNT *(volatile unsigned int*) 0x40000DC
 
-/* flag to enable direct memory access */
+/* flags to enable direct memory access */
 #define DMA_ENABLE 0x80000000
-
-/* start it right away */
 #define DMA_TIMING_IMMEDIATE 0x00000000
 
 /* transfer 16 or 32 bit memory? */

@@ -24,7 +24,6 @@ struct Obstacle obstacles[NUM_OBSTACLES];
 
 /* setup the obstacles */
 void obstacles_init() {
-
     /* randomly position them around */
     for (int i = 0; i < NUM_OBSTACLES; i++) {
         obstacles[i].start_x = 300 * (i + 1) + rand_offset() + 300;
@@ -75,9 +74,9 @@ void obstacles_update(int scroll) {
 int obstacles_crash(struct Rover* rover, int scroll) {
     for (int i = 0; i < NUM_OBSTACLES; i++) {
         /* if rover's right side is past obstacles left side */
-        if ((rover->x + 32) > obstacles[i].x) {
+        if ((rover->x + 24) > obstacles[i].x) {
             /* if rover's left end is not past obstacles right side */
-            if (rover->x < (obstacles[i].x + 24)) {
+            if (rover->x < (obstacles[i].x + 20)) {
                 /* if rover is on ground */
                 if (!rover->jumping) {
                     return 1;

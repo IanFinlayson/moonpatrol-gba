@@ -29,7 +29,6 @@ void wait_vblank(void) {
 /* delay for an amount of time */
 void delay(int amount) {
     for (int i = 0; i < amount * 10; i++) {
-
     }
 }
 

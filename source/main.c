@@ -20,6 +20,7 @@
 /* the sprite objects we have */
 struct Sprite* ship;
 unsigned short* bg3map;
+
 /* setup the background images */
 void setup_backgrounds() {
     int x = 4;
@@ -56,7 +57,6 @@ void setup_backgrounds() {
     }
 }
 
-
 /* setup the sprite objects in memory */
 void setup_sprites() {
     /* clear all sprites out */
@@ -70,12 +70,9 @@ void setup_sprites() {
     dma_memcpy((void*) objects_data, (void*) OBJECT_DATA_MEMORY,
             (objects_width * objects_height) / 2, DMA_16_NOW);
 
-
     /* setup our space ship */
     ship = sprite_init(50, 50, SIZE_32_16, 0, 0, 16, 0);
 }
-
-
 
 /* the main function */
 int main( ) {
@@ -105,11 +102,8 @@ int main( ) {
     unsigned int scroll = 0;
     int scroll_speed = SCROLL_MEDIUM;
 
-    /* we now loop forever displaying the image */
+    /* we now loop forever doing the game */
     while (1) {
-        /* wait for vertical refresh */
-		wait_vblank();
-
         /* we scroll right continuously in this game */
         scroll += scroll_speed;
 
@@ -130,11 +124,6 @@ int main( ) {
             rover_jump(&rover);
         }
 
-        /* parallax it up */
-        REG_BG0HOFS = scroll >> SCROLL_MOUNTAINS;
-        REG_BG1HOFS = scroll >> SCROLL_HILLS;
-        REG_BG2HOFS = scroll >> SCROLL_GROUND;
-
         /* update the obstacle positions */
         obstacles_update(scroll >> SCROLL_GROUND);
 
@@ -148,6 +137,11 @@ int main( ) {
 
         /* wait for vertical refresh again */
         wait_vblank();
+
+        /* update the scroll registers */
+        REG_BG0HOFS = scroll >> SCROLL_MOUNTAINS;
+        REG_BG1HOFS = scroll >> SCROLL_HILLS;
+        REG_BG2HOFS = scroll >> SCROLL_GROUND;
 
         /* update all sprites on screen */
         sprite_update_all();
