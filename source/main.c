@@ -132,7 +132,7 @@ int main( ) {
 
         /* check if the rover has crashed into an obstacle */
         if (obstacles_crash(&rover, scroll >> SCROLL_GROUND)) {
-            delay(999999);
+            rover_crash(&rover);
         }
 
         /* wait for vertical refresh again */

@@ -221,3 +221,40 @@ void rover_jump(struct Rover* rover) {
     }
 }
 
+/* crash the rover when it has been destroyed */
+void rover_crash(struct Rover* rover) {
+    /* move down a bit */
+    rover->y += (3 << VERT_SHIFT_AMOUNT);
+
+    /* keep track of the wheel postions */
+    int wheelx[3], wheely[3];
+    for (int i = 0; i < 3; i++) {
+        wheelx[i] = rover->x + WHEEL_SPACING * i;
+        wheely[i] = (rover->wheel_height[i] >> VERT_SHIFT_AMOUNT) + WHEEL_DROP;
+    }
+
+    for (int i = 0; i < 1000; i++) {
+        /* move the wheels some */
+        wheelx[0]--;
+        wheelx[2]++;
+        wheely[0]++;
+        wheely[1]++;
+        wheely[2]++;
+
+        /* set the position */
+        sprite_position(rover->body, rover->x, rover->y >> VERT_SHIFT_AMOUNT);
+        for (int i = 0; i < NUM_WHEELS; i++) {
+            sprite_position(rover->wheels[i], wheelx[i], wheely[i]);
+        }
+
+        /* wait for vertical refresh again */
+        wait_vblank();
+
+        /* update all sprites on screen */
+        sprite_update_all();
+
+        /* delay for a little bit */
+        delay(500);
+    }
+}
+

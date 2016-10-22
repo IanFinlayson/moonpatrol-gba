@@ -114,6 +114,9 @@ void rover_jump(struct Rover* rover);
 /* update the rover position and animation */
 void rover_update(struct Rover* rover, int scroll);
 
+/* perform the crash animation on the rover */
+void rover_crash(struct Rover* rover);
+
 /* represents one obstacle, either a pit or a mound */
 struct Obstacle {
     int start_x, x, y;
@@ -121,8 +124,13 @@ struct Obstacle {
     struct Sprite* sprite;
 };
 
+/* initialize the obstacles */
 void obstacles_init();
+
+/* update the obstacles */
 void obstacles_update(int scroll);
+
+/* check if the rover has crashed into any of the obstacles */
 int obstacles_crash(struct Rover* rover, int scroll);
 
 #endif
