@@ -88,11 +88,11 @@ void rover_init(struct Rover* rover) {
     rover->y = GROUND_HEIGHT;
 
     /* setup our sprites */
-    rover->body = sprite_init(rover->x, rover->y, SIZE_32_16, 0, 0, 0, 1);
     for (int i = 0; i < NUM_WHEELS; i++) {
         rover->wheels[i] = sprite_init(rover->x + WHEEL_SPACING * i,
                 rover->y + 10, SIZE_8_8, 0, 0, WHEEL_FRAME_1, 0);
     }
+    rover->body = sprite_init(rover->x, rover->y, SIZE_32_16, 0, 0, 0, 0);
 
     /* start at the first animation frame for the wheels */
     rover->side = 0;
@@ -233,7 +233,7 @@ void rover_crash(struct Rover* rover) {
         wheely[i] = (rover->wheel_height[i] >> VERT_SHIFT_AMOUNT) + WHEEL_DROP;
     }
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 100; i++) {
         /* move the wheels some */
         wheelx[0]--;
         wheelx[2]++;
