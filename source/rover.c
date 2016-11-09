@@ -224,7 +224,7 @@ void rover_jump(struct Rover* rover) {
 /* crash the rover when it has been destroyed */
 void rover_crash(struct Rover* rover) {
     /* move down a bit */
-    rover->y += (3 << VERT_SHIFT_AMOUNT);
+    rover->y += (4 << VERT_SHIFT_AMOUNT);
 
     /* keep track of the wheel postions */
     int wheelx[3], wheely[3];
@@ -233,13 +233,34 @@ void rover_crash(struct Rover* rover) {
         wheely[i] = (rover->wheel_height[i] >> VERT_SHIFT_AMOUNT) + WHEEL_DROP;
     }
 
-    for (int i = 0; i < 100; i++) {
+    /* hacky, but looks alright I guess
+     * this code fakes a gravity like up then falling animation for the wheels */
+    for (int i = 0; i < 75; i++) {
+        int amt;
+        if (i < 10) {
+            amt = -2;
+        } else if (i < 20) {
+            amt = -1;
+        } else if (i < 30) {
+           if (i & 1)
+               amt = -1;
+           else
+               amt = 0;
+        } else if (i < 40) {
+            amt = 0;
+        } else if (i < 60) {
+            amt = 1;
+        } else {
+            amt = 2;
+        }
         /* move the wheels some */
-        wheelx[0]--;
-        wheelx[2]++;
-        wheely[0]++;
-        wheely[1]++;
-        wheely[2]++;
+        if (i & 1) {
+            wheelx[0]--;
+            wheelx[2]++;
+        }
+        wheely[0] += amt;
+        wheely[1] += amt;
+        wheely[2] += amt;
 
         /* set the position */
         sprite_position(rover->body, rover->x, rover->y >> VERT_SHIFT_AMOUNT);
@@ -254,7 +275,7 @@ void rover_crash(struct Rover* rover) {
         sprite_update_all();
 
         /* delay for a little bit */
-        delay(500);
+        delay(750);
     }
 }
 
