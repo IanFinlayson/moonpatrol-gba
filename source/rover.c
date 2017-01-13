@@ -39,8 +39,6 @@
 #define JUMP_SPEED 130
 #define GRAVITY 2
 
-/* the shift amount to convert pixels to/from pixels/256 */
-#define VERT_SHIFT_AMOUNT 8
 
 /* an array storing the ground height at every position, this is relative
  * to the lowest height of the ground.  this is used in calculating what
@@ -235,7 +233,7 @@ void rover_crash(struct Rover* rover) {
 
     /* hacky, but looks alright I guess
      * this code fakes a gravity like up then falling animation for the wheels */
-    for (int i = 0; i < 75; i++) {
+    for (int i = 0; i < 100; i++) {
         int amt;
         if (i < 10) {
             amt = -2;

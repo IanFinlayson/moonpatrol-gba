@@ -55,14 +55,14 @@ void obstacles_update(int scroll) {
         obstacles[i].x = obstacles[i].start_x - scroll;
 
         /* check if off screen */
-        if (obstacles[i].x < 0) {
+        if ((obstacles[i].x + obstacles[i].width) <= 0) {
             /* move it down a ways again */
             obstacles[i].start_x = scroll + 1200 + rand_offset();
             obstacles[i].x = obstacles[i].start_x - scroll;
         }
 
         /* if on screen show it, otherwise hide it */
-        if (obstacles[i].x >= 0 && obstacles[i].x < SCREEN_WIDTH) {
+        if ((obstacles[i].x + obstacles[i].width) >= 0 && obstacles[i].x < SCREEN_WIDTH) {
             sprite_position(obstacles[i].sprite, obstacles[i].x, obstacles[i].y);
         } else {
             sprite_position(obstacles[i].sprite, SCREEN_WIDTH, SCREEN_HEIGHT);

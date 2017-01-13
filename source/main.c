@@ -18,9 +18,6 @@
 #define SCROLL_GROUND 2
 
 /* the sprite objects we have */
-struct Sprite* ship;
-unsigned short* bg3map;
-
 /* setup the background images */
 void setup_backgrounds() {
     int x = 4;
@@ -50,7 +47,7 @@ void setup_backgrounds() {
 
     /* set up layer 3 (ui) */
     init_background(3, 0, 19);
-    bg3map = (unsigned short*)ScreenBaseBlock(19);
+    unsigned short* bg3map = (unsigned short*)ScreenBaseBlock(19);
     /* zero out the text layer */
     for (int i = 0; i < 1024*2; i++) {
         bg3map[i] = 0;
@@ -69,9 +66,6 @@ void setup_sprites() {
     /* load the object image into memory */
     dma_memcpy((void*) objects_data, (void*) OBJECT_DATA_MEMORY,
             (objects_width * objects_height) / 2, DMA_16_NOW);
-
-    /* setup our space ship */
-    ship = sprite_init(50, 50, SIZE_32_16, 0, 0, 16, 0);
 }
 
 /* the main function */
@@ -98,6 +92,10 @@ top:
     /* the rover */
     struct Rover rover;
     rover_init(&rover);
+
+    /* the enemy ship */
+    struct Ship ship;
+    ship_init(&ship);
 
     /* the scroll for the game */
     unsigned int scroll = 0;
@@ -136,6 +134,9 @@ top:
             rover_crash(&rover);
             goto top;
         }
+
+        /* update the enemy ship */
+        ship_update(&ship, scroll >> SCROLL_GROUND);
 
         /* wait for vertical refresh again */
         wait_vblank();

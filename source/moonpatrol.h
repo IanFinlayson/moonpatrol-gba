@@ -11,6 +11,9 @@
 #define SCROLL_MEDIUM 4
 #define SCROLL_FAST 5
 
+/* the shift amount to convert pixels to/from pixels/256 */
+#define VERT_SHIFT_AMOUNT 8
+
 /* wait for a vertical refresh */
 void wait_vblank(void);
 
@@ -27,7 +30,7 @@ void init_background(int bg, int priority, int screenblock);
 void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode);
 
 /* write text to a specific tile on the screen */
-void set_text(char* str, int row, int col, unsigned short* textmap);
+void set_text(char* str, int row, int col);
 
 /* a sprite representing a hardware sprite object */
 struct Sprite {
@@ -116,6 +119,28 @@ void rover_update(struct Rover* rover, int scroll);
 
 /* perform the crash animation on the rover */
 void rover_crash(struct Rover* rover);
+
+struct Ship {
+    struct Sprite* sprite;
+
+    /* the x and y position of the rover
+     * the y, and the dy, and wheel_height below are actually measured in 1/256
+     * pixels.  This allows for fixed point math to implement our jumping
+     * mechanics */
+    int x, y;
+
+    /* the index to use when updating the ship along predefined paths */
+    int movement_counter;
+
+    /* counter to keep track of how many frames since last update */
+    int update_frames;
+};
+
+/* initialize the rover */
+void ship_init(struct Ship* ship);
+
+/* update the ship position and animation */
+void ship_update(struct Ship* ship, int scroll);
 
 /* represents one obstacle, either a pit or a mound */
 struct Obstacle {

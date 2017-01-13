@@ -29,7 +29,10 @@ void init_background(int bg, int priority, int scrnblk) {
 }
 
 /* write text to a specific tile on the screen */
-void set_text(char* str, int row, int col, unsigned short* textmap) {
+void set_text(char* str, int row, int col) {
+    /* pointer to the location of the text map */
+    unsigned short* textmap = (unsigned short*)ScreenBaseBlock(19);
+
     /* find the index in the texmap to draw to */
     int index = row * 32 + col;
 
