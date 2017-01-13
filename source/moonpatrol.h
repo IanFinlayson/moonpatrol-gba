@@ -134,6 +134,12 @@ struct Ship {
 
     /* counter to keep track of how many frames since last update */
     int update_frames;
+
+    /* whether the ship is visible */
+    int visible;
+
+    /* the number of frames passed since it was destroyed */
+    int frames_hidden;
 };
 
 /* initialize the rover */

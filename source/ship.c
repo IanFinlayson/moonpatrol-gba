@@ -7,6 +7,7 @@
 #define SHIP_PATH_SIZE 140
 #define SHIP_FRAME_SKIP 5
 #define SHIP_LOOP_START 20
+#define SHIP_HIDDEN_FRAMES 1000
 
 /* the list of directions that the ship takes in the x and y directions */
 int ship_x_directions [SHIP_PATH_SIZE] = {
@@ -18,7 +19,6 @@ int ship_x_directions [SHIP_PATH_SIZE] = {
      1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 };
-
 int ship_y_directions [SHIP_PATH_SIZE] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
     2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 
@@ -42,11 +42,28 @@ void ship_init(struct Ship* ship) {
     /* initial ship position */
     ship->x = 55;
     ship->y = -25;
+    sprite_position(ship->sprite, ship->x, ship->y);
+
+    /* set to hidden */
+    ship->visible = 0;
+    ship->frames_hidden = 0;
 }
 
 /* flip the wheel animation in the ship and update it's position
  * relative to the scrolling ground */
 void ship_update(struct Ship* ship, int scroll) {
+    if (!ship->visible) {
+        /* update hidden frames */
+        ship->frames_hidden++;
+
+        /* check if time to sho */
+        if (ship->frames_hidden >= SHIP_HIDDEN_FRAMES) {
+            ship->visible = 1;
+        } else {
+            return;
+        }
+    }
+
     /* check if this is a skip frame */
     ship->update_frames++;
     if (ship->update_frames >= SHIP_FRAME_SKIP) {
