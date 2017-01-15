@@ -1,6 +1,8 @@
 # Makefile
-# this program relies on the devkitadv (ttp://devkitadv.sourceforge.net/)
+# this program relies on the devkitadv (http://devkitadv.sourceforge.net/)
 # which must be unpacked, the KITHOME variable must point to its location
+# it also relies on my png2gba image converter being in the PATH
+# (https://github.com/IanFinlayson/moonpatrol-gba)
 KITHOME=/home/finlayson/source/devkitadv
 
 CC=$(KITHOME)/bin/arm-agb-elf-gcc

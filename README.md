@@ -1,8 +1,7 @@
 # Moon Patrol GBA
-A Game Boy Advance version of the old [Moon Patrol arcade game]
-(https://en.wikipedia.org/wiki/Moon_Patrol).
+A Game Boy Advance version of the old [Moon Patrol arcade game] (https://en.wikipedia.org/wiki/Moon_Patrol).
+It should run in any Game Boy Advance emulator (tested with Visual Boy Advance)
 
-## Requirements
+## Build Requirements
 - [DevKit Advance](http://devkitadv.sourceforge.net/)
-- A Game Boy Advance emulator (tested with [Visual Boy Advance]
-  (http://sourceforge.net/projects/vba/)) or other some way to run GBA games.
+- [My PNG to GBA image converter](https://github.com/IanFinlayson/moonpatrol-gba)
