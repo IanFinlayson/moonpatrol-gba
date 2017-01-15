@@ -3,6 +3,8 @@
  * this file contains the main function for the game
  */
 
+#include <stdio.h>
+
 #include "gba.h"
 #include "moonpatrol.h"
 #include "../images/background.h"
@@ -69,7 +71,7 @@ void setup_sprites() {
 }
 
 /* the main function */
-int main( ) {
+int main() {
 top:
     /* we set the mode to mode 0 with all backgrounds and objects turned on */
     *REG_DISPCNT = MODE_0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE | BG3_ENABLE |
@@ -100,6 +102,10 @@ top:
     /* the scroll for the game */
     unsigned int scroll = 0;
     int scroll_speed = SCROLL_MEDIUM;
+
+    /* the frame is used for calculating the scrore */
+    int frame = 0;
+    set_text("Score: 0", 0, 0);
 
     /* we now loop forever doing the game */
     while (1) {
@@ -137,6 +143,14 @@ top:
 
         /* update the enemy ship */
         ship_update(&ship, scroll >> SCROLL_GROUND);
+
+        /* update the score every 256 frames to be 1/256 frame * 10 */
+        frame++;
+        if ((frame & 0xff) == 0) {
+            char score_string[32];
+            sprintf(score_string, "Score: %d", (frame >> 8) * 10);
+            set_text(score_string, 0, 0);
+        }
 
         /* wait for vertical refresh again */
         wait_vblank();

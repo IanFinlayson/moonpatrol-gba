@@ -83,10 +83,6 @@ void ship_update(struct Ship* ship, int scroll) {
         ship->movement_counter = SHIP_LOOP_START;
     }
 
-    char location[16];
-    sprintf(location, "(%d, %d)", ship->x, ship->y);
-    set_text(location, 0, 0);
-
     /* position the sprite */
     sprite_position(ship->sprite, ship->x, ship->y);
 }
