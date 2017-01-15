@@ -72,11 +72,11 @@ void setup_sprites() {
 
 /* the main function */
 int main() {
-top:
     /* we set the mode to mode 0 with all backgrounds and objects turned on */
     *REG_DISPCNT = MODE_0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE | BG3_ENABLE |
         OBJ_ENABLE | OBJ_MAP_1D;
 
+top:
     /* set up the backgrounds */
     setup_backgrounds();
 
@@ -138,6 +138,9 @@ top:
         /* check if the rover has crashed into an obstacle */
         if (obstacles_crash(&rover, scroll >> SCROLL_GROUND)) {
             rover_crash(&rover);
+            wait_vblank();
+            sprite_update_all();
+            delay(250);
             goto top;
         }
 
