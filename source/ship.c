@@ -3,11 +3,13 @@
 
 #include "moonpatrol.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #define SHIP_PATH_SIZE 140
 #define SHIP_FRAME_SKIP 5
 #define SHIP_LOOP_START 20
 #define SHIP_HIDDEN_FRAMES 1000
+#define SHIP_FIRE_DELAY 75
 
 /* the list of directions that the ship takes in the x and y directions */
 int ship_x_directions [SHIP_PATH_SIZE] = {
@@ -47,6 +49,37 @@ void ship_init(struct Ship* ship) {
     /* set to hidden */
     ship->visible = 0;
     ship->frames_hidden = 0;
+
+    /* setup the bullets */
+    ship->bullet_index = 0;
+    for (int i = 0; i < SHIP_NUM_BULLTETS; i++) {
+        ship->bullets[i].bullet_sprite = sprite_init(0, 0, SIZE_8_8, 0, 0, 48, 0);
+        ship->bullets[i].x = 0;
+        ship->bullets[i].y = -100;
+        sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y);
+        ship->bullets[i].alive = 0;
+    }
+}
+
+/* have the ship fire a bullet */
+void ship_fire(struct Ship* ship) {
+    /* index the bullet and find next one */
+    struct Bullet* bullet = &(ship->bullets[ship->bullet_index]);
+    ship->bullet_index++;
+    if (ship->bullet_index >= SHIP_NUM_BULLTETS) {
+        ship->bullet_index = 0;
+    }
+
+    /* place it under the ship */
+    bullet->y = ship->y + 12;
+
+    /* randomly fire from the left or right turret */
+    if (rand() & 1) {
+        bullet->x = ship->x - 3;
+    } else {
+        bullet->x = ship->x + 18;
+    }
+    bullet->alive = 1;
 }
 
 /* flip the wheel animation in the ship and update it's position
@@ -56,9 +89,10 @@ void ship_update(struct Ship* ship, int scroll) {
         /* update hidden frames */
         ship->frames_hidden++;
 
-        /* check if time to sho */
+        /* check if time to show up */
         if (ship->frames_hidden >= SHIP_HIDDEN_FRAMES) {
             ship->visible = 1;
+            ship->fire_countdown = SHIP_FIRE_DELAY;
         } else {
             return;
         }
@@ -71,6 +105,24 @@ void ship_update(struct Ship* ship, int scroll) {
     }
     if (ship->update_frames > 0) {
         return;
+    }
+
+    /* check if it's time to fire */
+    ship->fire_countdown--;
+    if (ship->fire_countdown == 0) {
+        /* fire the bullet */
+        ship_fire(ship);
+
+        /* reset the counter */
+        ship->fire_countdown = SHIP_FIRE_DELAY;
+    }
+
+    /* update the bullets */
+    for (int i = 0; i < SHIP_NUM_BULLTETS; i++) {
+        if (ship->bullets[i].alive) {
+            ship->bullets[i].y++;
+            sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y); 
+        }
     }
 
     /* update the ship position based on the paths */

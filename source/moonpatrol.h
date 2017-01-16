@@ -14,6 +14,9 @@
 /* the shift amount to convert pixels to/from pixels/256 */
 #define VERT_SHIFT_AMOUNT 8
 
+/* the max number of ship bullets */
+#define SHIP_NUM_BULLTETS 3
+
 /* wait for a vertical refresh */
 void wait_vblank(void);
 
@@ -120,6 +123,7 @@ void rover_update(struct Rover* rover, int scroll);
 /* perform the crash animation on the rover */
 void rover_crash(struct Rover* rover);
 
+/* the enemy ship that appears at the top of the screen */
 struct Ship {
     struct Sprite* sprite;
 
@@ -140,6 +144,19 @@ struct Ship {
 
     /* the number of frames passed since it was destroyed */
     int frames_hidden;
+
+    /* the countdown for the enemy ship firing */
+    int fire_countdown;
+
+    /* the ship's bullets it shoots down */
+    struct Bullet {
+        struct Sprite* bullet_sprite;
+        int alive;
+        int x, y;
+    } bullets[SHIP_NUM_BULLTETS];
+    
+    /* how many bullets are active */
+    int bullet_index;
 };
 
 /* initialize the rover */
