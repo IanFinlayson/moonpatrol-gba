@@ -84,7 +84,7 @@ void ship_fire(struct Ship* ship) {
 
 /* flip the wheel animation in the ship and update it's position
  * relative to the scrolling ground */
-void ship_update(struct Ship* ship, int scroll) {
+int ship_update(struct Ship* ship, int scroll, struct Rover* rover) {
     if (!ship->visible) {
         /* update hidden frames */
         ship->frames_hidden++;
@@ -94,7 +94,7 @@ void ship_update(struct Ship* ship, int scroll) {
             ship->visible = 1;
             ship->fire_countdown = SHIP_FIRE_DELAY;
         } else {
-            return;
+            return 0;
         }
     }
 
@@ -104,7 +104,7 @@ void ship_update(struct Ship* ship, int scroll) {
         ship->update_frames = 0;
     }
     if (ship->update_frames > 0) {
-        return;
+        return 0;
     }
 
     /* check if it's time to fire */
@@ -122,8 +122,30 @@ void ship_update(struct Ship* ship, int scroll) {
         if (ship->bullets[i].alive) {
             ship->bullets[i].y++;
             sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y); 
+
+            /* check if it hit the rover */
+            if ((ship->bullets[i].y - 4) >= (rover->y >> VERT_SHIFT_AMOUNT)) {
+                if (ship->bullets[i].x > (rover->x + 32)) {
+                    /* no collision */
+                }
+                else if ((ship->bullets[i].x + 8) < rover->x) {
+                    /* no collision */
+                } else {
+                    /* BOOM */
+                    return 1;
+                }
+            }
+
+            /* check if the bullet hit the ground */
+            if (ship->bullets[i].y > 140) {
+                ship->bullets[i].x = 0;
+                ship->bullets[i].y = -100;
+                sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y);
+                ship->bullets[i].alive = 0;
+            }
         }
     }
+
 
     /* update the ship position based on the paths */
     ship->x += ship_x_directions[ship->movement_counter];
@@ -137,5 +159,6 @@ void ship_update(struct Ship* ship, int scroll) {
 
     /* position the sprite */
     sprite_position(ship->sprite, ship->x, ship->y);
+    return 0;
 }
 

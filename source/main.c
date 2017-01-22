@@ -144,8 +144,14 @@ top:
             goto top;
         }
 
-        /* update the enemy ship */
-        ship_update(&ship, scroll >> SCROLL_GROUND);
+        /* update the enemy ship, returns if the ship has destroyed the rover */
+        if (ship_update(&ship, scroll >> SCROLL_GROUND, &rover)) {
+            rover_crash(&rover);
+            wait_vblank();
+            sprite_update_all();
+            delay(250);
+            goto top;
+        }
 
         /* update the score every 256 frames to be 1/256 frame * 10 */
         frame++;
