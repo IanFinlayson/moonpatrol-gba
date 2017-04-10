@@ -15,7 +15,7 @@
 #define VERT_SHIFT_AMOUNT 8
 
 /* the max number of ship bullets */
-#define SHIP_NUM_BULLTETS 3
+#define SHIP_NUM_BULLTETS 5
 
 /* wait for a vertical refresh */
 void wait_vblank(void);
@@ -162,8 +162,8 @@ struct Ship {
 /* initialize the rover */
 void ship_init(struct Ship* ship);
 
-/* update the ship position and animation */
-void ship_update(struct Ship* ship, int scroll);
+/* update the ship position and animation, return 1 if the rover's destroyed */
+int ship_update(struct Ship* ship, int scroll, struct Rover* rover);
 
 /* represents one obstacle, either a pit or a mound */
 struct Obstacle {
