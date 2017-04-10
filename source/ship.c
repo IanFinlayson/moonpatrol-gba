@@ -10,6 +10,7 @@
 #define SHIP_LOOP_START 20
 #define SHIP_HIDDEN_FRAMES 1000
 #define SHIP_FIRE_DELAY 75
+#define SHIP_BULLET_SPEED 2
 
 /* the list of directions that the ship takes in the x and y directions */
 int ship_x_directions [SHIP_PATH_SIZE] = {
@@ -120,7 +121,7 @@ void ship_update(struct Ship* ship, int scroll) {
     /* update the bullets */
     for (int i = 0; i < SHIP_NUM_BULLTETS; i++) {
         if (ship->bullets[i].alive) {
-            ship->bullets[i].y++;
+            ship->bullets[i].y += SHIP_BULLET_SPEED;
             sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y); 
         }
     }
