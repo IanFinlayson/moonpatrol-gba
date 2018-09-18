@@ -3,7 +3,7 @@
 # which must be unpacked, the KITHOME variable must point to its location
 # it also relies on my png2gba image converter being in the PATH
 # (https://github.com/IanFinlayson/moonpatrol-gba)
-KITHOME=/home/finlayson/source/devkitadv
+KITHOME=/home/finlayson/sources/devkitadv
 
 CC=$(KITHOME)/bin/arm-agb-elf-gcc
 CFLAGS=-std=c99 -O3
@@ -16,7 +16,7 @@ HDRS := $(wildcard source/*.h) images/background.h images/objects.h
 OBJS := $(patsubst source/%.c,bin/%.o,$(SRCS))
 
 # do everything
-all: tags $(TARGET)
+all: $(TARGET)
 	@echo "All done!"
 
 # link it all together
@@ -39,9 +39,5 @@ images/objects.h: images/objects.png
  
 # tidy up
 clean:
-	rm -f $(TARGET) $(OBJS) bin/moonpatrol.elf tags
-
-# create ctags index
-tags: $(SRCS) $(HDRS)
-	ctags $(SRCS) $(HDRS)
+	rm -f $(TARGET) $(OBJS) bin/moonpatrol.elf
 

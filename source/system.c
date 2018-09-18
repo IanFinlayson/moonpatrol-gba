@@ -14,9 +14,9 @@ void dma_memcpy(void* source, void* dest, unsigned count, unsigned mode) {
 
     /* trigger the DMA hardware copy to run - the CPU is
      * automatically suspended until the transfer is done */
-    REG_DMA_SOURCE = (unsigned int) source;
-    REG_DMA_DESTINATION = (unsigned int) dest;
-    REG_DMA_COUNT = count | mode;
+    REG_DMA3_SOURCE = (unsigned int) source;
+    REG_DMA3_DESTINATION = (unsigned int) dest;
+    REG_DMA3_CONTROL = count | mode;
 }
 
 /* wait for a vertical refresh */

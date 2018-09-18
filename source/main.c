@@ -12,6 +12,7 @@
 #include "../maps/layer0.h"
 #include "../maps/layer1.h"
 #include "../maps/layer2.h"
+#include "../audio/music_16K_mono.h"
 
 /* control the paralax effect of the layers, and ground speed which affects the
  * gameplay a lot - these are rshift amounts, so larger means slower */
@@ -70,6 +71,21 @@ void setup_sprites() {
             (objects_width * objects_height) / 2, DMA_16_NOW);
 }
 
+/* start the music playing and init the sound system */
+void setup_sounds() {
+    INTERRUPT_ENABLE = 0;
+    INTERRUPT_CALLBACK = (unsigned int) &on_vblank;
+    INTERRUPT_SELECTION |= INTERRUPT_VBLANK;
+    DISPLAY_INTERRUPTS |= 0x08;
+    INTERRUPT_ENABLE = 1;
+
+    /* clear the sound control initially */
+    SOUND_CONTROL = 0;
+
+    /* set the music to play on channel A */
+    play_sound(music_16K_mono, music_16K_mono_bytes, 16000, 'A');
+}
+
 /* the main function */
 int main() {
     /* we set the mode to mode 0 with all backgrounds and objects turned on */
@@ -82,6 +98,9 @@ top:
 
     /* setup the sprites */
     setup_sprites();
+
+    /* setup sounds */
+    setup_sounds();
 
     /* setup the obstacles */
     obstacles_init();
