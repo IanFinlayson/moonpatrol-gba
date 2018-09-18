@@ -1,7 +1,9 @@
 /* rover.c
  * functions related to the rover object */
 
+#include "gba.h"
 #include "moonpatrol.h"
+#include "../audio/crash_16K_mono.h"
 
 /* the number of wheels on the rover */
 #define NUM_WHEELS 3
@@ -221,6 +223,9 @@ void rover_jump(struct Rover* rover) {
 
 /* crash the rover when it has been destroyed */
 void rover_crash(struct Rover* rover) {
+    /* play the sound effect on channel B */
+    play_sound(crash_16K_mono, crash_16K_mono_bytes, 16000, 'B');
+
     /* move down a bit */
     rover->y += (4 << VERT_SHIFT_AMOUNT);
 
