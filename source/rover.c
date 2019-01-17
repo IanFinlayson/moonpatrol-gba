@@ -4,6 +4,8 @@
 #include "gba.h"
 #include "moonpatrol.h"
 #include "../audio/crash_16K_mono.h"
+#include "../audio/rovershoot_16K_mono.h"
+#include "../audio/jump_16K_mono.h"
 
 /* the number of wheels on the rover */
 #define NUM_WHEELS 3
@@ -16,6 +18,9 @@
 
 /* the speed of the rover is one pixel per this many frames */
 #define ROVER_INVERSE_SPEED 2
+
+/* the speed of the rover's bullets */
+#define ROVER_BULLET_SPEED 1
 
 /* the x and y boundaries for the left side of the rover */
 #define GAP 70
@@ -102,6 +107,16 @@ void rover_init(struct Rover* rover) {
     /* we are not jumping to start */
     rover->dy = 0;
     rover->jumping = 0;
+
+    /* setup the bullets */
+    rover->bullet_index = 0;
+    for (int i = 0; i < ROVER_NUM_BULLTETS; i++) {
+        rover->bullets[i].bullet_sprite = sprite_init(0, 0, SIZE_8_8, 0, 1, 48, 0);
+        rover->bullets[i].x = -100;
+        rover->bullets[i].y = -100;
+        sprite_position(rover->bullets[i].bullet_sprite, rover->bullets[i].x, rover->bullets[i].y);
+        rover->bullets[i].alive = 0;
+    }
 }
 
 /* move the rover left or right */
@@ -176,7 +191,7 @@ void rover_elevate(struct Rover* rover, int scroll) {
 
 /* flip the wheel animation in the rover and update it's position
  * relative to the scrolling ground */
-void rover_update(struct Rover* rover, int scroll) {
+void rover_update(struct Rover* rover, struct Ship* ship, int scroll, int* bonus) {
     /* flip the animation, and calculate the rover elevation */
     rover_flip(rover);
 
@@ -209,6 +224,35 @@ void rover_update(struct Rover* rover, int scroll) {
         sprite_position(rover->wheels[i], rover->x + WHEEL_SPACING * i,
                 (rover->wheel_height[i] >> VERT_SHIFT_AMOUNT) + WHEEL_DROP);
     }
+
+    /* update the bullets */
+    for (int i = 0; i < ROVER_NUM_BULLTETS; i++) {
+        if (rover->bullets[i].alive) {
+            rover->bullets[i].y -= ROVER_BULLET_SPEED;
+            sprite_position(rover->bullets[i].bullet_sprite, rover->bullets[i].x, rover->bullets[i].y); 
+
+            /* check if it hit the ship */
+            if (rover->bullets[i].y < ship->y) {
+                if (rover->bullets[i].x > (ship->x + 32)) {
+                    /* no collision */
+                }
+                else if ((rover->bullets[i].x + 8) < ship->x) {
+                    /* no collision */
+                } else {
+                    ship_kill(ship);
+                    *bonus += 100;
+                }
+            }
+
+            /* check if the bullet went off screen */
+            if (rover->bullets[i].y < 0) {
+                rover->bullets[i].x = -100;
+                rover->bullets[i].y = -100;
+                sprite_position(rover->bullets[i].bullet_sprite, rover->bullets[i].x, rover->bullets[i].y);
+                rover->bullets[i].alive = 0;
+            }
+        }
+    }
 }
 
 /* jump the rover into the air */
@@ -218,8 +262,34 @@ void rover_jump(struct Rover* rover) {
         /* begin moving up! */
         rover->dy = -JUMP_SPEED;
         rover->jumping = 1;
+        play_sound(jump_16K_mono, jump_16K_mono_bytes, 16000, 'B');
     }
 }
+
+/* have the rover fire a bullet, if it can */
+void rover_fire(struct Rover* rover) {
+    /* index the bullet and find next one */
+    struct RoverBullet* bullet = &(rover->bullets[rover->bullet_index]);
+    rover->bullet_index++;
+    
+    /* only fire if it's not alive! */
+    if (bullet->alive) {
+        return;
+    }
+
+    if (rover->bullet_index >= SHIP_NUM_BULLTETS) {
+        rover->bullet_index = 0;
+    }
+
+    /* place it above the rover */
+    bullet->y = (rover->y >> VERT_SHIFT_AMOUNT) - 2;
+    bullet->x = rover->x + 4;
+    bullet->alive = 1;
+
+    /* play the sound */
+    play_sound(rovershoot_16K_mono, rovershoot_16K_mono_bytes, 16000, 'B');
+}
+
 
 /* crash the rover when it has been destroyed */
 void rover_crash(struct Rover* rover) {

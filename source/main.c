@@ -86,11 +86,21 @@ void setup_sounds() {
     play_sound(music_16K_mono, music_16K_mono_bytes, 16000, 'A');
 }
 
+/* handle the current score on crash */
+void handle_score(int score, int* high_score) {
+    if (score > *high_score) {
+        *high_score = score;
+    }
+}
+
 /* the main function */
 int main() {
     /* we set the mode to mode 0 with all backgrounds and objects turned on */
     *REG_DISPCNT = MODE_0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE | BG3_ENABLE |
         OBJ_ENABLE | OBJ_MAP_1D;
+
+    /* load the current high score from ROM (byte-by-byte) */
+    int high_score = 0; 
 
 top:
     /* set up the backgrounds */
@@ -124,7 +134,11 @@ top:
 
     /* the frame is used for calculating the scrore */
     int frame = 0;
+    int bonus = 0;
     set_text("Score: 0", 0, 0);
+    char score_string[32];
+    sprintf(score_string, "High Score: %d", high_score);
+    set_text(score_string, 0, 14);
 
     /* we now loop forever doing the game */
     while (1) {
@@ -148,17 +162,23 @@ top:
             rover_jump(&rover);
         }
 
+        /* fire when the B button is pressed */
+        if (button_down(BUTTON_B)) {
+            rover_fire(&rover);
+        }
+
         /* update the obstacle positions */
         obstacles_update(scroll >> SCROLL_GROUND);
 
         /* update the rover position */
-        rover_update(&rover, scroll >> SCROLL_GROUND);
+        rover_update(&rover, &ship, scroll >> SCROLL_GROUND, &bonus);
 
         /* check if the rover has crashed into an obstacle */
         if (obstacles_crash(&rover, scroll >> SCROLL_GROUND)) {
             rover_crash(&rover);
             wait_vblank();
             sprite_update_all();
+            handle_score((frame >> 8) * 10 + bonus, &high_score);
             delay(250);
             goto top;
         }
@@ -168,6 +188,7 @@ top:
             rover_crash(&rover);
             wait_vblank();
             sprite_update_all();
+            handle_score((frame >> 8) * 10 + bonus, &high_score);
             delay(250);
             goto top;
         }
@@ -176,8 +197,10 @@ top:
         frame++;
         if ((frame & 0xff) == 0) {
             char score_string[32];
-            sprintf(score_string, "Score: %d", (frame >> 8) * 10);
+            sprintf(score_string, "Score: %d", (frame >> 8) * 10 + bonus);
             set_text(score_string, 0, 0);
+            sprintf(score_string, "High Score: %d", high_score);
+            set_text(score_string, 0, 14);
         }
 
         /* wait for vertical refresh again */

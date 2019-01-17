@@ -3,7 +3,7 @@
 # which must be unpacked, the KITHOME variable must point to its location
 # it also relies on my png2gba image converter being in the PATH
 # (https://github.com/IanFinlayson/moonpatrol-gba)
-KITHOME=/home/finlayson/sources/devkitadv
+KITHOME=/home/ifinlay/sources/devkitadv
 
 CC=$(KITHOME)/bin/arm-agb-elf-gcc
 CFLAGS=-std=c99 -O3

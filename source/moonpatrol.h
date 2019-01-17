@@ -14,8 +14,9 @@
 /* the shift amount to convert pixels to/from pixels/256 */
 #define VERT_SHIFT_AMOUNT 8
 
-/* the max number of ship bullets */
+/* the max number of bullets */
 #define SHIP_NUM_BULLTETS 5
+#define ROVER_NUM_BULLTETS 1
 
 /* wait for a vertical refresh */
 void wait_vblank(void);
@@ -103,25 +104,19 @@ struct Rover {
     int dy;
     int jumping;
 
+    /* the rover bullets */
+    struct RoverBullet {
+        struct Sprite* bullet_sprite;
+        int alive;
+        int x, y;
+    } bullets[ROVER_NUM_BULLTETS];
+
+    /* how many bullets are active */
+    int bullet_index;
+    
     /* the height of each wheel */
     int wheel_height[3];
 };
-
-/* initialize the rover */
-void rover_init(struct Rover* rover);
-
-/* move the rover left or right */
-void rover_left(struct Rover* rover);
-void rover_right(struct Rover* rover);
-
-/* jump the rover into the air */
-void rover_jump(struct Rover* rover);
-
-/* update the rover position and animation */
-void rover_update(struct Rover* rover, int scroll);
-
-/* perform the crash animation on the rover */
-void rover_crash(struct Rover* rover);
 
 /* the enemy ship that appears at the top of the screen */
 struct Ship {
@@ -149,7 +144,7 @@ struct Ship {
     int fire_countdown;
 
     /* the ship's bullets it shoots down */
-    struct Bullet {
+    struct ShipBullet {
         struct Sprite* bullet_sprite;
         int alive;
         int x, y;
@@ -159,8 +154,31 @@ struct Ship {
     int bullet_index;
 };
 
+
+/* initialize the rover */
+void rover_init(struct Rover* rover);
+
+/* move the rover left or right */
+void rover_left(struct Rover* rover);
+void rover_right(struct Rover* rover);
+
+/* jump the rover into the air */
+void rover_jump(struct Rover* rover);
+
+/* fire a bullet from the rover */
+void rover_fire(struct Rover* rover);
+
+/* update the rover position and animation */
+void rover_update(struct Rover* rover, struct Ship*, int scroll, int* bonus);
+
+/* perform the crash animation on the rover */
+void rover_crash(struct Rover* rover);
+
 /* initialize the rover */
 void ship_init(struct Ship* ship);
+
+/* remove a ship */
+void ship_kill(struct Ship* ship);
 
 /* update the ship position and animation, return 1 if the rover's destroyed */
 int ship_update(struct Ship* ship, int scroll, struct Rover* rover);

@@ -2,6 +2,9 @@
  * functions related to the enemy ship object */
 
 #include "moonpatrol.h"
+#include "gba.h"
+#include "../audio/shipshoot_16K_mono.h"
+#include "../audio/shipkill_16K_mono.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -32,7 +35,6 @@ int ship_y_directions [SHIP_PATH_SIZE] = {
 	-1, -2, -2, -2, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, 0, 1, 1, 2, 2
 };
 
-
 /* setup the ship */
 void ship_init(struct Ship* ship) {
     /* the ship starts at the beginning of the movement path */
@@ -55,7 +57,7 @@ void ship_init(struct Ship* ship) {
     ship->bullet_index = 0;
     for (int i = 0; i < SHIP_NUM_BULLTETS; i++) {
         ship->bullets[i].bullet_sprite = sprite_init(0, 0, SIZE_8_8, 0, 0, 48, 0);
-        ship->bullets[i].x = 0;
+        ship->bullets[i].x = -100;
         ship->bullets[i].y = -100;
         sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y);
         ship->bullets[i].alive = 0;
@@ -65,7 +67,7 @@ void ship_init(struct Ship* ship) {
 /* have the ship fire a bullet */
 void ship_fire(struct Ship* ship) {
     /* index the bullet and find next one */
-    struct Bullet* bullet = &(ship->bullets[ship->bullet_index]);
+    struct ShipBullet* bullet = &(ship->bullets[ship->bullet_index]);
     ship->bullet_index++;
     if (ship->bullet_index >= SHIP_NUM_BULLTETS) {
         ship->bullet_index = 0;
@@ -81,6 +83,28 @@ void ship_fire(struct Ship* ship) {
         bullet->x = ship->x + 18;
     }
     bullet->alive = 1;
+    play_sound(shipshoot_16K_mono, shipshoot_16K_mono_bytes, 16000, 'B');
+}
+
+/* set the ship off screen after its hit */
+void ship_kill(struct Ship* ship) {
+    ship->movement_counter = 0;
+    ship->update_frames = 0;
+    ship->x = 55;
+    ship->y = -25;
+    sprite_position(ship->sprite, ship->x, ship->y);
+    ship->visible = 0;
+    ship->frames_hidden = 0;
+    ship->bullet_index = 0;
+    for (int i = 0; i < SHIP_NUM_BULLTETS; i++) {
+        ship->bullets[i].x = 0;
+        ship->bullets[i].y = -100;
+        sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y);
+        ship->bullets[i].alive = 0;
+    }
+
+    /* play the killed sound */
+    play_sound(shipkill_16K_mono, shipkill_16K_mono_bytes, 16000, 'B');
 }
 
 /* flip the wheel animation in the ship and update it's position
@@ -139,7 +163,7 @@ int ship_update(struct Ship* ship, int scroll, struct Rover* rover) {
 
             /* check if the bullet hit the ground */
             if (ship->bullets[i].y > 140) {
-                ship->bullets[i].x = 0;
+                ship->bullets[i].x = -100;
                 ship->bullets[i].y = -100;
                 sprite_position(ship->bullets[i].bullet_sprite, ship->bullets[i].x, ship->bullets[i].y);
                 ship->bullets[i].alive = 0;
