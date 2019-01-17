@@ -1,5 +1,5 @@
 # Moon Patrol GBA
-A Game Boy Advance version of the old [Moon Patrol arcade game] (https://en.wikipedia.org/wiki/Moon_Patrol).
+A Game Boy Advance version of the old [Moon Patrol arcade game](https://en.wikipedia.org/wiki/Moon_Patrol).
 It should run in any Game Boy Advance emulator (tested with Visual Boy Advance).
 The game is finished now.  It does not do everything that could be desired such
 as letting the player shoot the obstacles or have multiple levels/enemies etc.
