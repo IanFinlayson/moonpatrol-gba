@@ -1,7 +1,6 @@
 # ignore compiled files, and the tags file
 *.o
 *.elf
-*.gba
 tags
 
 # ignore the generated images
