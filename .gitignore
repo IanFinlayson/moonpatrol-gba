@@ -3,5 +3,6 @@
 *.elf
 tags
 
-# ignore the generated images
+# ignore the generated images and audio
 images/*.h
+audio/*.h
